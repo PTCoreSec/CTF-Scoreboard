@@ -1,0 +1,51 @@
+extends ../layout
+
+block content
+    section#main.column
+      .clear
+      article.module.width_full
+        form(action='insertProblem', method='POST')
+            header
+              h3 Create New Problem
+            .module_content
+              fieldset
+                label Category
+                select(name='category')
+                  - each categorie in categories
+                    option(value='#{categorie.idgrupos_problemas}') #{categorie.name}
+              fieldset
+                label Answer
+                input(type='text', name='answer', value='')              
+              fieldset
+                label Level
+                select(name='level')
+                    option(value='1') 1
+                    option(value='2') 2
+                    option(value='3') 3
+                    option(value='4') 4
+              fieldset
+                label Points
+                select(name='points')
+                    option(value='100') 100
+                    option(value='200') 200
+                    option(value='300') 300
+                    option(value='400') 400
+                    option(value='500') 500
+                    option(value='600') 600
+                    option(value='700') 700
+                    option(value='800') 800
+                    option(value='900') 900
+                    option(value='1000') 1000
+                //
+                    input(type='text', name='points', value='')
+              fieldset
+                label Category Description
+                textarea(rows='12', name='description')
+              .clear
+            footer
+              .submit_link
+                input.alt_btn(type='submit', value='Submit')
+                input(type='submit', value='Reset')
+      //
+         end of post new article 
+      .spacer

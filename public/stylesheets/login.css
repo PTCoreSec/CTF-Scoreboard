@@ -1,0 +1,19 @@
+      .container {
+        width: 300px;
+      }
+
+      /* The white background content wrapper */
+      .container > .content {
+        padding: 20px;
+        margin: 0 -20px; 
+      }
+
+    .login-form {
+      margin-left: 65px;
+    }
+  
+    legend {
+      margin-right: -50px;
+      font-weight: bold;
+      color: #404040;
+    }

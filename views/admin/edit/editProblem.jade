@@ -1,0 +1,38 @@
+extends ../layout
+
+block content
+    section#main.column
+      .clear
+      article.module.width_full
+        form(action='/editProblem/#{problem.idproblemas}', method='POST')
+            header
+              h3 Edit Problem
+            .module_content
+              fieldset
+                label Category
+                select(name='category')
+                  - each categorie in categories
+                    - if (categorie.idgrupos_problemas==problem.idgrupos_problemas)
+                        option(value='#{categorie.idgrupos_problemas}', selected='selected') #{categorie.name}
+                    - else
+                        option(value='#{categorie.idgrupos_problemas}') #{categorie.name}
+              fieldset
+                label Answer
+                input(type='text', name='answer', value='#{problem.resposta}')
+              fieldset
+                label Level
+                input(type='text', name='level', value='#{problem.level}')
+              fieldset
+                label Points
+                input(type='text', name='points', value='#{problem.points}')             
+              fieldset
+                label Category Description
+                textarea(rows='12', name='description') #{problem.description}
+              .clear
+            footer
+              .submit_link
+                input.alt_btn(type='submit', value='Submit')
+                input(type='submit', value='Reset')
+      //
+         end of post new article 
+      .spacer

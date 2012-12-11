@@ -1,0 +1,17 @@
+extends ../layout
+
+block scripts
+	link(rel='stylesheet', href='/stylesheets/login.css')
+	
+block content
+	div.container
+		div.content
+			div.row
+				div.login-form
+					form(action='/login', method='POST')
+						fieldset
+							div.clearfix
+								input.text-input(type='text', name='username', id='username', placeholder='User')
+							div.clearfix
+								input.text-input(type='password', name='password', id='password', placeholder='Password')
+							button.btn.btn-primary(type='submit') Login

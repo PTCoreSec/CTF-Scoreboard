@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+    section#main.column
+      .clear
+      article.module.width_full
+        form(action='insertChallenge', method='POST')
+            header
+              h3 Create Challenge
+            .module_content
+              fieldset
+                label Challenge Name
+                input(type='text', name='challengeName', value='')
+              fieldset
+                label Challenge Description
+                textarea(rows='12', name='description')
+              .clear
+            footer
+              .submit_link
+                input.alt_btn(type='submit', value='Submit')
+                input(type='submit', value='Reset')
+      //
+         end of post new article 
+      .spacer

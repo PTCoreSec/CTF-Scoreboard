@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+	section#main.column
+		.clear
+		article.module.width_full
+			header
+				h3.tabs_involved List Categories
+			.tab_container
+				#tab1.tab_content
+					table.tablesorter(cellspacing='0')
+						thead
+							tr
+								th Name
+								th Description
+								th Actions
+							tbody
+							- each categorie in categories
+								tr
+									td	#{categorie.name}
+									td	#{categorie.desc}
+									td
+										a(href='editCategory/#{categorie.idgrupos_problemas}')
+											input(type='image',	src='images/icn_edit.png',	title='Edit')
+										a(href='deleteCategory/#{categorie.idgrupos_problemas}')
+											input(type='image',	src='images/icn_trash.png',	title='Trash')
+			//
+				end	of	#tab1	
+		//
+			end	of	.tab_container	
+		//
+			end	of	content	manager	article
+		.spacer

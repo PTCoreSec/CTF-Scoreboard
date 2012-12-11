@@ -1,0 +1,95 @@
+!!! 5
+html(lang='en')
+head
+    meta(charset='utf-8')
+    title PTCoreSec Admin Panel
+    link(rel='stylesheet', href='/css/layout.css', type='text/css', media='screen')
+    //if lt IE 9
+      link(rel='stylesheet', href='/css/ie.css', type='text/css', media='screen')
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='/javascripts/jquery.min.js')
+    script(src='/javascripts/admin.js')
+    script(src='/js/hideshow.js', type='text/javascript')
+    script(src='/js/jquery.tablesorter.min.js', type='text/javascript')
+    script(type='text/javascript', src='/js/jquery.equalHeight.js')
+    script(type='text/javascript')
+      $(document).ready(function()
+      {
+      $(".tablesorter").tablesorter();
+      }
+      );
+      $(document).ready(function() {
+      //When page loads...
+      $(".tab_content").hide(); //Hide all content
+      $("ul.tabs li:first").addClass("active").show(); //Activate first tab
+      $(".tab_content:first").show(); //Show first tab content
+      //On Click Event
+      $("ul.tabs li").click(function() {
+      $("ul.tabs li").removeClass("active"); //Remove any "active" class
+      $(this).addClass("active"); //Add "active" class to selected tab
+      $(".tab_content").hide(); //Hide all tab content
+      var activeTab = $(this).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
+      $(activeTab).fadeIn(); //Fade in the active ID content
+      return false;
+      });
+      });
+    script(type='text/javascript')
+      $(function(){
+      $('.column').equalHeight();
+      });
+  body
+    header#header
+      hgroup
+        h1.site_title
+          a(href='/dashboard')  PTCoreSec Admin
+        //
+          h2.section_title Dashboard
+    //
+       end of header bar 
+    section#secondary_bar
+      .user
+        p #{session.user}
+        //
+           <a class="logout_user" href="#" title="Logout">Logout</a> 
+    aside#sidebar.column
+      h3 Manage Teams
+      ul.toggle
+        li.icn_add_user
+          a(href='/addTeam') Add New Team
+        li.icn_view_users
+          a(href='/listTeams') List Teams
+      //
+        h3 Manage Challenges
+        ul.toggle
+          li.icn_new_article
+            a(href='/addChallenge') Add New Challenge
+          li.icn_categories
+            a(href='/listChallenges') List Challenges
+      h3 Manage Problems
+      ul.toggle
+        li.icn_new_article
+          a(href='/addCategory') Add New Category
+        li.icn_categories
+          a(href='/listCategories') List Categories
+        li.icn_new_article
+          a(href='/addProblem') Add New Problem
+        li.icn_categories
+          a(href='/listProblems') List Problems
+      h3 Scoreboard
+      ul.toggle
+        li.icn_settings
+          a(href='/') Go back to Scoreboard
+      h3 Admin
+      ul.toggle
+        li.icn_settings
+          a(href='/options') Options
+        li.icn_settings
+          a(href='/comms') Communications
+        li.icn_jump_back
+          a(href='/logout') Logout
+    //end of sidebar 
+    block content
+    
+    footer
+        script(src='/socket.io/socket.io.js')
+        block footer

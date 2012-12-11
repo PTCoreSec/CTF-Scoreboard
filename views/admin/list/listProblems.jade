@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+	section#main.column
+		.clear
+		article.module.width_full
+			header
+				h3.tabs_involved List Problems
+			.tab_container
+				#tab1.tab_content
+					table.tablesorter(cellspacing='0')
+						thead
+							tr
+								th Group Name
+								//
+									th Problem ID
+								th Description
+								th Answer
+								th Points
+								th Level
+								th Actions
+							tbody
+							- each problem in problems
+								tr
+									td	#{problem.name}
+									//
+										td	#{problem.idproblemas}
+									td	#{problem.description}
+									td	#{problem.resposta}
+									td	#{problem.points}
+									td	#{problem.level}
+									td
+										a(href='editProblem/#{problem.idproblemas}')
+											input(type='image',	src='images/icn_edit.png',	title='Edit')
+										a(href='deleteProblem/#{problem.idproblemas}')
+											input(type='image',	src='images/icn_trash.png',	title='Trash')
+			//
+				end	of	#tab1	
+		//
+			end	of	.tab_container	
+		//
+			end	of	content	manager	article
+		.spacer

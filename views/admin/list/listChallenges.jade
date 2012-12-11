@@ -1,0 +1,133 @@
+extends ../layout
+
+block content
+    section#main.column
+      .clear
+      article.module.width_full
+        header
+          h3.tabs_involved Content Manager
+          ul.tabs
+            li
+              a(href='#tab1') Posts
+            li
+              a(href='#tab2') Comments
+        .tab_container
+          #tab1.tab_content
+            table.tablesorter(cellspacing='0')
+              thead
+                tr
+                  th
+                  th Entry Name
+                  th Category
+                  th Created On
+                  th Actions
+              tbody
+                tr
+                  td
+                    input(type='checkbox')
+                  td Lorem Ipsum Dolor Sit Amet
+                  td Articles
+                  td 5th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Ipsum Lorem Dolor Sit Amet
+                  td Freebies
+                  td 6th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Sit Amet Dolor Ipsum
+                  td Tutorials
+                  td 10th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Dolor Lorem Amet
+                  td Articles
+                  td 16th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Dolor Lorem Amet
+                  td Articles
+                  td 16th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+          //
+             end of #tab1 
+          #tab2.tab_content
+            table.tablesorter(cellspacing='0')
+              thead
+                tr
+                  th
+                  th Comment
+                  th Posted by
+                  th Posted On
+                  th Actions
+              tbody
+                tr
+                  td
+                    input(type='checkbox')
+                  td Lorem Ipsum Dolor Sit Amet
+                  td Mark Corrigan
+                  td 5th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Ipsum Lorem Dolor Sit Amet
+                  td Jeremy Usbourne
+                  td 6th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Sit Amet Dolor Ipsum
+                  td Super Hans
+                  td 10th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Dolor Lorem Amet
+                  td Alan Johnson
+                  td 16th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Dolor Lorem Amet
+                  td Dobby
+                  td 16th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+          //
+             end of #tab2 
+        //
+           end of .tab_container 
+      //
+         end of content manager article
+      .spacer

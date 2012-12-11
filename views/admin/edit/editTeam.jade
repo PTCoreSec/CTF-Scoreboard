@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+    section#main.column
+      .clear
+      article.module.width_full
+        form(action='/editTeam/#{team.idteams}', method='POST')
+            header
+              h3 Edit Team
+            .module_content
+              fieldset
+                label Team Name
+                input(type='text', name='teamName', value='#{team.name}')
+              fieldset
+                label Team Description
+                textarea(rows='12', name='description') #{team.description}
+              .clear
+            footer
+              .submit_link
+                input.alt_btn(type='submit', value='Submit')
+                input(type='submit', value='Reset')
+      //
+         end of post new article 
+      .spacer

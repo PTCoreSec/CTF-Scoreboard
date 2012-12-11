@@ -1,0 +1,55 @@
+extends ../layout
+
+block content
+    section#main.column
+      .clear
+      article.module.width_full
+        form(action='editOptions', method='POST')
+            header
+              h3 General Options
+            .module_content
+              fieldset
+                label Start Date
+                input(type='text', name='startDate', value='#{config.start_date}')
+              fieldset
+                label End Date
+                input(type='text', name='endDate', value='#{config.end_date}')
+              fieldset
+                label Random Problem Interval
+                input(type='text', name='random_problem_opening_interval', value='#{config.random_problem_opening_interval}')
+              .clear
+            footer
+              .submit_link
+                input.alt_btn(type='submit', value='Submit')
+                input.alt_btn(id='reloadConfig', type='submit', value='Reload Options at Server')
+      article.module.width_full
+        form(action='resetTeamlogs', method='POST')
+            header
+              h3 Reset Stuff
+            .module_content
+              fieldset
+                p This will only reset team logs for now.
+              .clear
+            footer
+              .submit_link
+                input.alt_btn(id='reset', type='submit', value='Reset')      
+      article.module.width_full
+        form
+            header
+              h3 Open Problem
+            .module_content
+              fieldset
+                p Select problem to Open.
+                  fieldset
+                    label Category
+                    select(id='category', name='category')
+                      option 
+                      - each categorie in categories
+                        option(value='#{categorie.idgrupos_problemas}', idproblem='#{categorie.idproblemas}', idgroup='#{categorie.idgrupos_problemas}') #{categorie.name} - #{categorie.points}
+              .clear
+            footer
+              .submit_link
+                input.alt_btn(id='adminActivateProblem', type='submit', value='Open')
+      //
+         end of post new article 
+      .spacer

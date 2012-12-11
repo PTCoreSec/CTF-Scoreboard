@@ -1,0 +1,132 @@
+extends layout
+
+block scripts
+	script(src='../javascripts/jquery.scrollTo-1.4.2-min.js')
+	link(rel='stylesheet', href='/stylesheets/style.css')
+	
+	script(type='text/javascript')
+		$(document).ready(function() {
+			var level1 = #{level1};
+			var level2 = #{level2};
+			var level3 = #{level3};
+
+
+			$('div.exampleborderradiusa').each(function(index) {
+				var level = jQuery(this).attr("level");
+				if((level == 2 && level1>0) || (level == 3 && level2>0) || (level3>0 && level == 4)){
+					if(jQuery(this).hasClass('pontuacao_closed')){
+						jQuery(this).removeClass("pontuacao_closed");
+						jQuery(this).addClass("pontuacao_can_open");
+					}
+				}
+			});
+			
+
+
+			var start = new Date('#{config[0].start_date}');
+			var end = new Date('#{config[0].end_date}');
+			var note = $('#note');
+			ts = start;
+			newYear = true;
+			if(note){
+				if((new Date()) > ts){
+					// The new year is here! Count towards something else.
+					// Notice the *1000 at the end - time must be in milliseconds
+					ts = end;
+					newYear = false;
+				}
+						
+				$('#countdown').countdown({
+					timestamp	: ts,
+					callback	: function(days, hours, minutes, seconds){
+						var message = "";
+						note.html(message);
+					}
+				});
+			}
+		});
+	script(src='../javascripts/script.js')
+block content
+	div(id='page')
+		- if(!open)
+			div(style='margin:0 auto;text-align:center;')
+				//
+					h3 Soon..
+				img(src='soon.png', alt='Soon, height='400', width='400')
+		- else 
+			div(id='conteudoGeral')
+				div(id='conteudo')
+					table
+						tr
+							td
+								div(id='left')
+									- var largura = groups.length*173
+									- var numProblems = 0
+									- each problemsFromGroup in problems
+										-if(problemsFromGroup.length>numProblems)
+											- numProblems = problemsFromGroup.length
+									- var altura = (numProblems+1)*80
+									div.main_pontuacao(id='main_pontuacao', style='width: #{largura}px;height: #{altura}px;')
+										- each group, i in groups
+											div.group
+												div.exampleborderradiusatop.pontuacao_header
+													span.exampleborderradiusatop(style='font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;') #{group.name}
+												- var problemsFromGroup = problems[i]
+												- each problem in problemsFromGroup
+													- if(problem.correct > 0)	
+														div.exampleborderradiusa.pontuacao_correct(group=problem.idgrupos_problemas, problem=problem.idproblemas, id=problem.idgrupos_problemas+''+problem.idproblemas, level=problem.level)
+															span.exampleborderradiusa #{problem.points}
+													- else
+														- if(problem.open)
+															div.exampleborderradiusa.pontuacao_no_answer(group=problem.idgrupos_problemas, problem=problem.idproblemas, id=problem.idgrupos_problemas+''+problem.idproblemas, level=problem.level)
+																span.exampleborderradiusa #{problem.points}	
+														- else
+															div.exampleborderradiusa.pontuacao_closed(group=problem.idgrupos_problemas, problem=problem.idproblemas, id=problem.idgrupos_problemas+''+problem.idproblemas, level=problem.level)
+																span.exampleborderradiusa #{problem.points}	
+																			div(id='legenda')
+										div.legenda.pontuacao_correct
+										div.legenda_text Answered
+										div.legenda.pontuacao_no_answer
+										div.legenda_text Open
+										div.legenda.pontuacao_closed
+										div.legenda_text Closed
+										div.legenda.pontuacao_can_open
+										div.legenda_text You can open me
+										//
+											div.legenda_text(style='text-align:right;width:460px;color:red;') U can open X problems
+							td
+								div(id='right')
+									div(id='answer')
+										h3(style='font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;margin-left:5px;') Problem
+											div(style='height:240px;')
+												label(id='problem_description', style='color:black;') 
+											div(style='height:30px;')
+												form.form-inline
+													input.span2(id='answerInput', text='text', style='display: none;')
+													input.button(id='submitAnswer', type='submit', value='Answer', sytle='width:50px;display: none;').btn.btn-primary
+													span.help-inline(id='feedback') 
+									div(id='leaderboard')
+										h3(style='font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;margin-left:5px;') Leaderboard
+										div(id='scores')
+											table
+												-each team in teams
+													-if(team)
+														-var points = 0
+														-if(team.points)
+															- points = team.points
+														-if(team.idteams == session.passport.user)
+															tr
+																td 
+																	p(style='color: white;') #{team.name} 
+																td 
+																	p(style='color: white;') - 
+																td(style='text-align:right;')
+																	p(style='color: white;') #{points}
+														-else
+															tr
+																td
+																	p #{team.name} 
+																td 
+																	p - 
+																td(style='text-align:right;')
+																	p #{points}

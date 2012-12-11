@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+    section#main.column
+      .clear
+      article.module.width_full
+        form
+            header
+              h3 Communications
+            .module_content
+              fieldset
+                label Global Message
+                input(id='message', type='text', name='message', value='')
+              .clear
+            footer
+              .submit_link
+                input.alt_btn(id='sendMessage', type='submit', value='Submit')
+      //
+         end of post new article 
+      .spacer

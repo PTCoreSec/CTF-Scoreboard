@@ -1,0 +1,96 @@
+!!! 5
+html(lang='pt-PT')
+	head
+		title PTCoreSec
+		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		link(rel='stylesheet', href='/stylesheets/jquery.countdown.css')
+		link(rel='stylesheet', href='/stylesheets/jquery.toastmessage.css')
+		script(src='../javascripts/jquery.min.js')
+		script(src='/socket.io/socket.io.js')
+		script(src='../javascripts/jquery.countdown.js')
+		script(src='../javascripts/bootstrap.min.js')
+		block scripts
+	body
+		#main
+			div.navbar
+				div.navbar-inner
+					div.container(style='height:40px;')
+						a(href='http://www.ptcoresec.eu/').brand PTCoreSec
+						div.nav-collapse
+							ul.nav
+								if(session.path == '/')
+									li.active
+										a(href='/') Public
+								else
+									li
+										a(href='/') Public
+							- if (session.administrationLevel == 2)
+								ul.nav
+									if(session.path == '/dashboard')
+										li.active
+											a(href='/dashboard') Administration
+									else
+										li
+											a(href='/dashboard') Administration
+							- else
+								- if (session.passport.user)
+									ul.nav
+										if(session.path == '/score')
+											li.active
+												a(href='/score') My Scoreboard
+										else
+											li
+												a(href='/score') My Scoreboard
+
+												
+							ul.nav.pull-right
+								- if (session.passport.user)
+									ul.nav
+										li
+											p
+												div(id='countdown')
+												p(id='note')
+									- var userType = ''
+									- if (session.administrationLevel == 2)
+										userType = 'Admin '
+									- else
+										userType = 'Team '
+									li
+										p.navbar-text #{userType} 
+											a(href='/', id='teamId', team='#{session.passport.user}') #{session.user}  
+									li.divider-vertical
+									li
+										p.navbar-text
+											a(href='/logout') logout
+								- else
+									ul.nav
+										li
+											p
+												div(id='countdown')
+												p(id='note')
+									ul.nav.nav-tabs.pull-right.signin-menu
+										li.dropdown(id='menu1')
+											a.dropdown-toggle(data-toggle='dropdown', href='#menu1') Login
+												b.caret
+											div.dropdown-menu
+												form(style="margin: 0px;", action='/login', method='POST')
+													fieldset.textbox(style="padding:10px;")
+														div.clearfix
+															input(style="margin-top: 8px", type='text', name='username', id='username', placeholder='Username')
+														div.clearfix
+															input(style="margin-top: 8px", type='password', name='password', id='password', placeholder='Password')
+														button.btn.primary(type='submit') Login
+		block content
+		
+		footer
+			script(src='../javascripts/jquery.toastmessage.js')
+			script(src='../javascripts/jquery-ui.min.js')
+			script(src='../javascripts/bootstrap-collapse.js')
+			script(src='../javascripts/bootstrap-popover.js')
+			script(src='../javascripts/bootstrap-tooltip.js')
+			script(src='../javascripts/bootstrap-modal.js')
+			script(src='../javascripts/bootstrap-alert.js')
+			script(src='../javascripts/bootstrap-tab.js')
+			script(src='../javascripts/bootstrap-transition.js')
+			block footer

@@ -1,0 +1,192 @@
+extends layout
+
+block scripts
+	script(src='/socket.io/socket.io.js')
+	script(src='../javascripts/jquery.scrollTo-1.4.2-min.js')
+	script(src='../javascripts/jquery.countdown.js')
+	link(rel='stylesheet', href='/stylesheets/style.css')
+	link(rel='stylesheet', href='/stylesheets/jquery.countdown.css')
+	script(src='../javascripts/highcharts.js')
+	script(src='../javascripts/index.js')
+	script(type='text/javascript')
+		var chart;
+		var datas = !{JSON.stringify(logs)};
+		var config = !{JSON.stringify(config)};
+		var teams = !{JSON.stringify(teams)};
+		
+
+		$(document).ready(function() {
+			//Countdown
+			var start = new Date('#{config[0].start_date}');
+				var end = new Date('#{config[0].end_date}');
+				var note = $('#note');
+				ts = start;
+				newYear = true;
+				if(note){
+					if((new Date()) > ts){
+						// The new year is here! Count towards something else.
+						// Notice the *1000 at the end - time must be in milliseconds
+						ts = end;
+						newYear = false;
+					}
+							
+					$('#countdown').countdown({
+						timestamp	: ts,
+						callback	: function(days, hours, minutes, seconds){
+							var message = "";
+							note.html(message);
+						}
+					});
+				}
+			//Chart
+			chart = new Highcharts.Chart({
+				chart: {
+					renderTo: 'container',
+					marginRight: 200,
+					type: 'scatter',
+					zoomType: 'x'
+				},
+				title: {
+					text: 'Timeline'
+				},
+				subtitle: {
+					text: 'Click and drag to zoom'
+				},
+				xAxis: {
+					type: 'datetime',
+					tickPixelInterval: 150
+				},
+				yAxis: {
+					title: {
+						text: 'Points'
+					},
+					minPadding: 0.2,
+					maxPadding: 0.2,
+					maxZoom: 60,
+					plotLines: [{
+						value: 0,
+						width: 1,
+						color: '#808080'
+					}] ,
+					min: 0,
+					tickInterval: 200
+				},
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'top',
+					x: -10,
+					y: 0,
+					floating: true,
+					borderWidth: 0,
+					labelFormatter: function() {
+						var points = 0;
+						if(this.yData.length > 0){
+							for(var i in this.yData){
+								console.log(this.yData[i]);
+								if( this.yData[i] > points){
+									points = this.yData[i];
+								}
+							}
+						}
+						return this.name +' - '+points;
+					}
+				},
+				exporting: {
+					enabled: false
+				},
+				plotOptions: {
+					series: {
+						lineWidth: 1
+					}
+				},
+				tooltip: {
+					formatter: function() {
+						var myDate = new Date(this.x);
+						var timezone_delay = -myDate.getTimezoneOffset()*60*1000;
+						myDate = new Date(myDate.getTime() - timezone_delay);
+						var date = myDate.toString('dd/mm/yyyy HH:mm:ss');
+						return '<b> '+ this.series.name +'</b>'+
+							'<br>category: <b>'+this.point.name+'</b>' +
+							'<br>points: <b>'+this.y+'</b>';
+					}
+				},
+				series: datas     
+			});
+		});
+		
+block content
+	div(id='page')
+		div(id='conteudoGeral')
+			div(id='conteudo')
+				ul.nav.nav-tabs.active(id='myTab')
+					li.active
+						a(href='#timeline', data-toggle='tab') Timeline
+					li
+						a(href='#scoreboard', data-toggle='tab') Scoreboard
+				div.tab-content
+					div.tab-pane.active(id='timeline', style='width: 1000px; height: 500px; margin: 0 auto;')
+						div(id='container', style='width: 1000px; height: 400px; margin: 0 auto;')
+					div.tab-pane(id='scoreboard')
+						div(id='conteudoGeral')
+							div(id='conteudo')
+								table
+									tr
+										td
+											div(id='left')
+												- var largura = groups.length*173
+												- var numProblems = 0
+												- each problemsFromGroup in problems
+													-if(problemsFromGroup.length>numProblems)
+														- numProblems = problemsFromGroup.length
+												- var altura = (numProblems+1)*80
+												div.main_pontuacao(id='main_pontuacao', style='width: #{largura}px;height: #{altura}px;')
+													- each group, i in groups
+														div.group
+															div.exampleborderradiusatop.pontuacao_header
+																span.exampleborderradiusatop #{group.name}
+															- var problemsFromGroup = problems[i]
+															- each problem in problemsFromGroup
+																if(problem.correct > 0)	
+																	div.exampleborderradiusa.pontuacao_correct(group=problem.idgrupos_problemas, problem=problem.idproblemas, id=problem.idgrupos_problemas+''+problem.idproblemas)
+																		span.exampleborderradiusa #{problem.points}
+																- else
+																	- if(problem.open)
+																		div.exampleborderradiusa.pontuacao_no_answer(group=problem.idgrupos_problemas, problem=problem.idproblemas, id=problem.idgrupos_problemas+''+problem.idproblemas)
+																			span.exampleborderradiusa #{problem.points}	
+																	- else
+																		div.exampleborderradiusa.pontuacao_closed(group=problem.idgrupos_problemas, problem=problem.idproblemas, id=problem.idgrupos_problemas+''+problem.idproblemas)
+																			span.exampleborderradiusa #{problem.points}	
+													div.legenda.pontuacao_correct
+													div.legenda_text Answered
+													div.legenda.pontuacao_no_answer
+													div.legenda_text Open
+													div.legenda.pontuacao_closed
+													div.legenda_text Closed
+										td
+											div(id='right')
+												div(id='leaderboard_public')
+													h1(style='font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;margin-left:5px;') Leaderboard
+													div(id='scores')
+														table
+															-each team in teams
+																-if(team)
+																	-var points = 0
+																	-if(team.points)
+																		- points = team.points
+																	-if(team.idteams == session.passport.user)
+																		tr
+																			td
+																				p(style='color: white;') #{team.name} 
+																			td 
+																				p(style='color: white;') - 
+																			td
+																				p(style='color: white;') #{points}
+																	-else
+																		tr
+																			td
+																				p #{team.name} 
+																			td 
+																				p - 
+																			td
+																				p #{points}

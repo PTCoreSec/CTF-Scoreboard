@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+    section#main.column
+      .clear
+      article.module.width_full
+        form(action='insertTeam', method='POST')
+            header
+              h3 Create Team
+            .module_content
+              fieldset
+                label Team Name
+                input(type='text', name='teamName', value='')
+              fieldset
+                label User Type
+                select(name='type')
+                  option(value='0') Normal
+                  option(value='2') Admin
+              fieldset
+                label Password
+                input(type='password', name='teamPassword', value='')
+              fieldset
+                label Confirm Password
+                input(type='password', name='confirmTeamPassord)
+              fieldset
+                label Team Description
+                textarea(rows='12', name='description')
+              .clear
+            footer
+              .submit_link
+                input.alt_btn(type='submit', value='Submit')
+                input(type='submit', value='Reset')
+      //
+         end of post new article 
+      .spacer

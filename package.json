@@ -1,0 +1,35 @@
+{
+    "name": "PTCoreSec-Scoreboard-CTF"
+  , "version": "0.1"
+  , "author": {
+      "name": "PTCoreSec"
+    , "email": "ptcoresec@ptcoresec.eu"
+  }
+  , "contributors": [
+      {	
+         "name": "Gank"
+       , "email": "Gank@ptcoresec.eu"
+      }
+     ,{
+         "name": "Maluko"
+       , "email": "Maluko@ptcoresec.eu"
+      }
+     ,{
+         "name": "Balgan"
+       , "email": "Balgan@ptcoresec.eu"
+      }
+  ]
+  , "dependencies": {
+      "express": "2.5.8"
+    , "jade": "0.26.3"
+    , "connect-redis": "1.4.0"
+    , "cookie": "0.0.4"
+    , "mysql": "2.0.0-alpha3"
+    , "node_hash": "0.2.0"
+    , "passport": "0.1.10"
+    , "passport-local": "0.1.3"
+    , "randomstring": "1.0.1"
+    , "redis": "0.7.2"
+    , "socket.io": "0.9.6"
+  }
+}

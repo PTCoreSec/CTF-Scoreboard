@@ -1,0 +1,352 @@
+!!! 5
+html(lang='en')
+head
+    meta(charset='utf-8')
+    title Dashboard I Admin Panel
+    link(rel='stylesheet', href='css/layout.css', type='text/css', media='screen')
+    //if lt IE 9
+      link(rel='stylesheet', href='css/ie.css', type='text/css', media='screen')
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='js/jquery-1.5.2.min.js', type='text/javascript')
+    script(src='js/hideshow.js', type='text/javascript')
+    script(src='js/jquery.tablesorter.min.js', type='text/javascript')
+    script(type='text/javascript', src='js/jquery.equalHeight.js')
+    script(type='text/javascript')
+      $(document).ready(function()
+      {
+      $(".tablesorter").tablesorter();
+      }
+      );
+      $(document).ready(function() {
+      //When page loads...
+      $(".tab_content").hide(); //Hide all content
+      $("ul.tabs li:first").addClass("active").show(); //Activate first tab
+      $(".tab_content:first").show(); //Show first tab content
+      //On Click Event
+      $("ul.tabs li").click(function() {
+      $("ul.tabs li").removeClass("active"); //Remove any "active" class
+      $(this).addClass("active"); //Add "active" class to selected tab
+      $(".tab_content").hide(); //Hide all tab content
+      var activeTab = $(this).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
+      $(activeTab).fadeIn(); //Fade in the active ID content
+      return false;
+      });
+      });
+    script(type='text/javascript')
+      $(function(){
+      $('.column').equalHeight();
+      });
+  body
+    header#header
+      hgroup
+        h1.site_title
+          a(href='index.html') Website Admin
+        h2.section_title Dashboard
+    //
+       end of header bar 
+    section#secondary_bar
+      .user
+        p
+          | John Doe (
+          a(href='#') 3 Messages
+          | )
+        //
+           <a class="logout_user" href="#" title="Logout">Logout</a> 
+      .breadcrumbs_container
+        article.breadcrumbs
+          a(href='index.html') Website Admin
+          .breadcrumb_divider
+          a.current Dashboard
+    //
+       end of secondary bar 
+    aside#sidebar.column
+      form.quick_search
+        input(type='text', value='Quick Search', onfocus='if(!this._haschanged){this.value=\'\'};this._haschanged=true;')
+      hr
+      h3 Content
+      ul.toggle
+        li.icn_new_article
+          a(href='#') New Article
+        li.icn_edit_article
+          a(href='#') Edit Articles
+        li.icn_categories
+          a(href='#') Categories
+        li.icn_tags
+          a(href='#') Tags
+      h3 Users
+      ul.toggle
+        li.icn_add_user
+          a(href='#') Add New User
+        li.icn_view_users
+          a(href='#') View Users
+        li.icn_profile
+          a(href='#') Your Profile
+      h3 Media
+      ul.toggle
+        li.icn_folder
+          a(href='#') File Manager
+        li.icn_photo
+          a(href='#') Gallery
+        li.icn_audio
+          a(href='#') Audio
+        li.icn_video
+          a(href='#') Video
+      h3 Admin
+      ul.toggle
+        li.icn_settings
+          a(href='#') Options
+        li.icn_security
+          a(href='#') Security
+        li.icn_jump_back
+          a(href='logout') Logout
+      footer
+        hr
+        p
+          strong Copyright © 2011 Website Admin
+        p
+          | Theme by
+          a(href='http://www.medialoot.com') MediaLoot
+    //
+       end of sidebar 
+    section#main.column
+      h4.alert_info
+        | Welcome to the free MediaLoot admin panel template, this could be an informative message.
+      article.module.width_full
+        header
+          h3 Stats
+        .module_content
+          article.stats_graph
+            img(src='http://chart.apis.google.com/chart?chxr=0,0,3000&chxt=y&chs=520x140&cht=lc&chco=76A4FB,80C65A&chd=s:Tdjpsvyvttmiihgmnrst,OTbdcfhhggcTUTTUadfk&chls=2|2&chma=40,20,20,30', width='520', height='140', alt='')
+          article.stats_overview
+            .overview_today
+              p.overview_day Today
+              p.overview_count 1,876
+              p.overview_type Hits
+              p.overview_count 2,103
+              p.overview_type Views
+            .overview_previous
+              p.overview_day Yesterday
+              p.overview_count 1,646
+              p.overview_type Hits
+              p.overview_count 2,054
+              p.overview_type Views
+          .clear
+      //
+         end of stats article 
+      article.module.width_3_quarter
+        header
+          h3.tabs_involved Content Manager
+          ul.tabs
+            li
+              a(href='#tab1') Posts
+            li
+              a(href='#tab2') Comments
+        .tab_container
+          #tab1.tab_content
+            table.tablesorter(cellspacing='0')
+              thead
+                tr
+                  th
+                  th Entry Name
+                  th Category
+                  th Created On
+                  th Actions
+              tbody
+                tr
+                  td
+                    input(type='checkbox')
+                  td Lorem Ipsum Dolor Sit Amet
+                  td Articles
+                  td 5th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Ipsum Lorem Dolor Sit Amet
+                  td Freebies
+                  td 6th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Sit Amet Dolor Ipsum
+                  td Tutorials
+                  td 10th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Dolor Lorem Amet
+                  td Articles
+                  td 16th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Dolor Lorem Amet
+                  td Articles
+                  td 16th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+          //
+             end of #tab1 
+          #tab2.tab_content
+            table.tablesorter(cellspacing='0')
+              thead
+                tr
+                  th
+                  th Comment
+                  th Posted by
+                  th Posted On
+                  th Actions
+              tbody
+                tr
+                  td
+                    input(type='checkbox')
+                  td Lorem Ipsum Dolor Sit Amet
+                  td Mark Corrigan
+                  td 5th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Ipsum Lorem Dolor Sit Amet
+                  td Jeremy Usbourne
+                  td 6th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Sit Amet Dolor Ipsum
+                  td Super Hans
+                  td 10th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Dolor Lorem Amet
+                  td Alan Johnson
+                  td 16th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+                tr
+                  td
+                    input(type='checkbox')
+                  td Dolor Lorem Amet
+                  td Dobby
+                  td 16th April 2011
+                  td
+                    input(type='image', src='images/icn_edit.png', title='Edit')
+                    input(type='image', src='images/icn_trash.png', title='Trash')
+          //
+             end of #tab2 
+        //
+           end of .tab_container 
+      //
+         end of content manager article 
+      article.module.width_quarter
+        header
+          h3 Messages
+        .message_list
+          .module_content
+            .message
+              p Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor.
+              p
+                strong John Doe
+            .message
+              p Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor.
+              p
+                strong John Doe
+            .message
+              p Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor.
+              p
+                strong John Doe
+            .message
+              p Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor.
+              p
+                strong John Doe
+            .message
+              p Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor.
+              p
+                strong John Doe
+        footer
+          form.post_message
+            input(type='text', value='Message', onfocus='if(!this._haschanged){this.value=\'\'};this._haschanged=true;')
+            input.btn_post_message(type='submit', value='')
+      //
+         end of messages article 
+      .clear
+      article.module.width_full
+        header
+          h3 Post New Article
+        .module_content
+          fieldset
+            label Post Title
+            input(type='text')
+          fieldset
+            label Content
+            textarea(rows='12')
+          fieldset(style='width: 48%; float: left; margin-right: 3%;')
+            //
+               to make two field float next to one another, adjust values accordingly 
+            label Category
+            select(style='width: 92%;')
+              option Articles
+              option Tutorials
+              option Freebies
+          fieldset(style='width: 48%; float: left;')
+            //
+               to make two field float next to one another, adjust values accordingly 
+            label Tags
+            input(type='text', style='width: 92%;')
+          .clear
+        footer
+          .submit_link
+            select
+              option Draft
+              option Published
+            input.alt_btn(type='submit', value='Publish')
+            input(type='submit', value='Reset')
+      //
+         end of post new article 
+      h4.alert_warning A Warning Alert
+      h4.alert_error An Error Message
+      h4.alert_success A Success Message
+      article.module.width_full
+        header
+          h3 Basic Styles
+        .module_content
+          h1 Header 1
+          h2 Header 2
+          h3 Header 3
+          h4 Header 4
+          p
+            | Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras mattis consectetur purus sit amet fermentum. Maecenas faucibus mollis interdum. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+          p
+            | Donec id elit non mi porta
+            a(href='#') link text
+            | gravida at eget metus. Donec ullamcorper nulla non metus auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+          ul
+            li Donec ullamcorper nulla non metus auctor fringilla. 
+            li Cras mattis consectetur purus sit amet fermentum.
+            li Donec ullamcorper nulla non metus auctor fringilla. 
+            li Cras mattis consectetur purus sit amet fermentum.
+      //
+         end of styles article 
+      .spacer
