@@ -27,7 +27,7 @@ mysql -u username -p &lt; salts.sql
 </pre>
 </code>
 
-Go back to the main folder and configure the config.js file to use your MySQL database, it will look like this,
+Go back to the main folder and copy config-example.js to config.js. Next configure the config.js file to use your MySQL database, it will look like this,
 <pre>
 <code>
 var config = {};
@@ -36,16 +36,16 @@ config.db = {};
 config.dbHashes = {};
 
 // Complete DB
-config.db.host = ''; // &lt;-- Insert host
-config.db.user = ''; // &lt;-- Insert user
-config.db.password = ''; // &lt;-- Insert password
+config.db.host = 'localhost'; // &lt;-- Insert host
+config.db.user = 'root'; // &lt;-- Insert user
+config.db.password = 'password'; // &lt;-- Insert password
 //Don't Change.
 config.db.database = 'torneio';
 
 // Password Salt DB
-config.dbHashes.host = ''; // &lt;-- Insert host
-config.dbHashes.user = ''; // &lt;-- Insert user
-config.dbHashes.password = ''; // &lt;-- Insert password
+config.dbHashes.host = 'localhost'; // &lt;-- Insert host
+config.dbHashes.user = 'root'; // &lt;-- Insert user
+config.dbHashes.password = 'password'; // &lt;-- Insert password
 //Don't Change.
 config.dbHashes.database = 'passsalts';
 
