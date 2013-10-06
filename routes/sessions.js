@@ -7,7 +7,7 @@ exports.requiresLogin = function(req, res, next){
 		req.session.administrationLevel = req.user[0].administrationLevel;
 		next();
 	} else {
-		res.render('session/login', { title: 'PTCoreSec Login' });
+		res.render('session/login', { title: 'CyberCTF Login' });
 	}
 }
 
@@ -18,13 +18,13 @@ exports.requiresAdminLogin = function(req, res, next){
 		req.session.administrationLevel = req.user[0].administrationLevel;
 		next();
 	} else {
-		res.render('session/login', { title: 'PTCoreSec Login' });
+		res.render('session/login', { title: 'CyberCTF Login' });
 	}
 }
 
 exports.login = function(req, res) {
 		req.session.path = req.route.path;
-		res.render('session/login', { title: 'PTCoreSec Login' });
+		res.render('session/login', { title: 'CyberCTF Login' });
 }
 
 exports.logout = function(req, res) {

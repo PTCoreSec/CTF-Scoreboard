@@ -29,5 +29,5 @@ exports.checkRegistration = function(req, res) {
 
 exports.register = function(req, res) {
 	req.session.path = req.route.path;
-	res.render('session/register', {title: 'PTCoreSec Register' });
+	res.render('session/register', {title: 'CyberCTF Register' });
 }
