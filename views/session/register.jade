@@ -1,0 +1,33 @@
+extends ../layout
+
+block scripts
+	link(rel='stylesheet', href='/stylesheets/login.css')
+
+block content
+	div.container
+		div.content
+			div.row
+				div.register-form
+					form(action='register', method='POST')
+						header
+							h3 Register Team
+							.module_content
+								fieldset
+									label Team Name
+									input(type='text', name='teamName', value='')
+								fieldset
+									label Password
+									input(type='password', name='teamPassword', value='')
+								fieldset
+									label Confirm Password
+									input(type='password', name='confirmTeamPassord')
+								fieldset
+									label Team Description
+									textarea(rows='12', name='description')
+								.clear
+								footer
+								.submit_link
+								input.alt_btn(type='submit', value='Submit')
+								input(type='submit', value='Reset')
+								//end of post new article 
+								.spacer

@@ -221,6 +221,7 @@ var index = require('./routes/index');
 var score = require('./routes/score');
 var sessions = require('./routes/sessions');
 var administration = require('./routes/administration');
+var registration = require('./routes/registration');
 
 //Vai tudo para o score
 app.get('/', index.index);
@@ -231,6 +232,9 @@ app.post('/answer', sessions.requiresLogin, score.answer);
 app.get('/login', sessions.login);
 app.post('/login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureFlash: true }));
 app.get('/logout', sessions.logout);
+
+app.get('/register', registration.register);
+app.post('/register', registration.checkRegistration, passport.authenticate('local', {successRedirect: "/", failureReditect: "/register", failureFlash: true}));
 
 app.get('/dashboard', sessions.requiresAdminLogin, administration.dashTemplate);
 
