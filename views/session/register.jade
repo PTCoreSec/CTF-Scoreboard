@@ -11,6 +11,8 @@ block content
 					form(action='register', method='POST')
 						header
 							h3 Register Team
+							- if (session.e = true)
+								p.error #{error}
 							.module_content
 								fieldset
 									label Team Name
@@ -28,6 +30,5 @@ block content
 								footer
 								.submit_link
 								input.alt_btn(type='submit', value='Submit')
-								input(type='submit', value='Reset')
 								//end of post new article 
 								.spacer
