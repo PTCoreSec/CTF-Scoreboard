@@ -7,36 +7,36 @@ var connections = require('../BD/db.js');
 exports.checkRegistration = function(req, res) {
 	var teamName = req.body.teamName;
 	var teamPassword = req.body.teamPassword;
+	var confirmTeamPassword = req.body.confirmTeamPassword;
 	
 	var salt = randomstring.generate(20);
 	var password = hash.sha512(teamPassword, salt);
 
-	req.session.e = false;
-
 	if((teamPassword == "") || (teamName == "")) {
-		req.session.e = true;
-		res.render("session/register", {error: "Invalid Username/Password", title: "CyberCTF Registration"})
+		res.render("session/register", {message: "Invalid Username/Password", title: "CyberCTF Registration"})
+	}
+
+	if (teamPassword != confirmTeamPassword) {
+		res.render("session/register", {message: "Passwords do not match", title: "CyberCTF Registration", username: teamName})
 	}
 
 	if((teamName != "") && (teamPassword != "" )) {
 		connections.connection.query('SELECT * FROM teams WHERE ?', {name: teamName}, function(err, result) {
-			console.log(result);
-			if (result[0]) res.render('session/register', {title: "CyberCTF Registration 1"});
+			if (result[0]) {
+				res.render('session/register', {title: "CyberCTF Registration", message:"Team name already taken"});}
 			else {
 				connections.connection.query('INSERT INTO teams SET ?', {name: teamName, description: req.body.description, password: password, administrationLevel: 0}, function(err, result) {
 					if (err) console.log(err);
 					connections.connectionHashes.query('INSERT INTO userHashes SET ?', {idteams: result.insertId, salt: salt}, function(err, result2){
 						if(err) console.log(err);
-						res.render('session/register');
 					});
 				});
-				res.redirect("/login");
+				res.render("session/login", {title: "CyberCTF Login", message: "Registration Successful. Please login."});
 			}
 		});
 	}
 }
 
 exports.register = function(req, res) {
-	req.session.e = false;
-	res.render('session/register', {title: 'CyberCTF Registration', error: "" });
+	res.render('session/register', {title: 'CyberCTF Registration'});
 }

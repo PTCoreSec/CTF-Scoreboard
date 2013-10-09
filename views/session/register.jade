@@ -11,18 +11,21 @@ block content
 					form(action='register', method='POST')
 						header
 							h3 Register Team
-							- if (session.e = true)
-								p.error #{error}
+							- if (typeof message !== "undefined")
+								p.error #{message}
 							.module_content
 								fieldset
 									label Team Name
-									input(type='text', name='teamName', value='')
+									- if (typeof username !== "undefined")
+										input(type='text', name='teamName', value=username)
+									- else
+										input(type='text', name='teamName', value='')
 								fieldset
 									label Password
 									input(type='password', name='teamPassword', value='')
 								fieldset
 									label Confirm Password
-									input(type='password', name='confirmTeamPassord')
+									input(type='password', name='confirmTeamPassword')
 								fieldset
 									label Team Description
 									textarea(rows='12', name='description')
@@ -30,5 +33,4 @@ block content
 								footer
 								.submit_link
 								input.alt_btn(type='submit', value='Submit')
-								//end of post new article 
 								.spacer
