@@ -113,7 +113,7 @@ function callbackRender(req, res, groups, problems){
 					level3 = rowsTeams[i].problems_to_open_level_3;
 				}
 			}
-			res.render('score', { title: 'CyberCTF Scoreboard', thisteam: req.session.teamId, level1: level1, level2: level2, level3: level3, open: open, config: rowsConfig, groups: groups, problems: problems, teams: rowsTeams})
+			res.render('score', { title: 'CSS15CTF Scoreboard', thisteam: req.session.teamId, level1: level1, level2: level2, level3: level3, open: open, config: rowsConfig, groups: groups, problems: problems, teams: rowsTeams})
 		});
 	});
 }

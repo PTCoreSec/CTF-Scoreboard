@@ -121,7 +121,7 @@ function callbackRender(req, res, groups, problems){
 					}
 					
 					connections.connection.query(sqlConfig, function(errConfig, rowsConfig, fieldsConfig) {
-						res.render('index', { title: 'CyberCTF Scoreboard', config: rowsConfig, groups: groups, problems: problems, teams: rowsTeams, logs: processLogs});
+						res.render('index', { title: 'CSS15CTF Scoreboard', config: rowsConfig, groups: groups, problems: problems, teams: rowsTeams, logs: processLogs});
 					});
 				});
 
