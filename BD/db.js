@@ -1,21 +1,21 @@
-//Config
-var config = require('../config.js');
+//dbconfig
+var dbconfig = require('../dbconfig.js');
 var mysql = require('mysql');
 
 var connections = {};
 
 connections.connection = mysql.createConnection({
-							host     : config.db.host,
-							user     : config.db.user,
-							password : config.db.password,
-							database : config.db.database,
+							host     : dbconfig.db.host,
+							user     : dbconfig.db.user,
+							password : dbconfig.db.password,
+							database : dbconfig.db.database,
 						});
 
 connections.connectionHashes = mysql.createConnection({
-								host     : config.dbHashes.host,
-								user     : config.dbHashes.user,
-								password : config.dbHashes.password,
-								database : config.dbHashes.database,
+								host     : dbconfig.dbHashes.host,
+								user     : dbconfig.dbHashes.user,
+								password : dbconfig.dbHashes.password,
+								database : dbconfig.dbHashes.database,
 							});
 
 module.exports = connections;
