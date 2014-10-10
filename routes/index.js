@@ -2,12 +2,13 @@
 /*
  * GET home page.
  */
- 
- var mysql = require('mysql');
- var util = require('util');
- var connections = require('../BD/db.js');
 
- 
+var mysql = require('mysql');
+var util = require('util');
+var connections = require('../BD/db.js');
+var config = require('../config.js');
+
+
 connections.connection.on('close', function(err) {
   if (err) {
     // We did not expect this connection to terminate
@@ -41,7 +42,7 @@ exports.index = function(req, res){
 			var totalGroups = 0;
 			for(var i = 0; rowsGroups[i];i++){
 				var sqlProblemas = 'SELECT p.*, SUM(t.correct) as correct FROM problemas as p LEFT JOIN teams_log as t '
-									+' on p.idgrupos_problemas = t.idgrupos_problemas and p.idproblemas = t.idproblemas ' 
+									+' on p.idgrupos_problemas = t.idgrupos_problemas and p.idproblemas = t.idproblemas '
 									+ 'where p.idgrupos_problemas = '+rowsGroups[i].idgrupos_problemas+' '
 									+' group by p.idproblemas ORDER by points';
 				connections.connection.query(sqlProblemas, function(err, rows, fields) {
@@ -64,7 +65,7 @@ exports.index = function(req, res){
 
 function callbackRender(req, res, groups, problems){
 	var teams = new Array;
-	var sqlTeams = 'SELECT * FROM teams where administrationLevel = 0';	
+	var sqlTeams = 'SELECT * FROM teams where administrationLevel = 0';
 	var sqlConfig = 'SELECT * from config';
 	var sqlTeamsPoints = 'SELECT t.idteams, name, sum(p.points) as points, (SELECT data from teams_log where teams_log.idteams = t.idteams order by data desc limit 1) as data '
 		+ ', problems_to_open_level_1, problems_to_open_level_2, problems_to_open_level_3, problems_to_open_level_4 '
@@ -107,7 +108,7 @@ function callbackRender(req, res, groups, problems){
 
 
 				connections.connection.query(sqlTeams, function(errTeams, rows, fields) {
-					
+
 					for(var i = 0; rows[i];i++){
 						var teamid = rows[i].idteams;
 						if(teamsDataAll[rows[i].idteams]){
@@ -119,9 +120,9 @@ function callbackRender(req, res, groups, problems){
 							}
 						}
 					}
-					
+
 					connections.connection.query(sqlConfig, function(errConfig, rowsConfig, fieldsConfig) {
-						res.render('index', { title: 'CyberCTF Scoreboard', config: rowsConfig, groups: groups, problems: problems, teams: rowsTeams, logs: processLogs});
+						res.render('index', { title: config.brand, dbconfig: rowsConfig, groups: groups, problems: problems, teams: rowsTeams, logs: processLogs, config: config});
 					});
 				});
 

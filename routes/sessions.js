@@ -1,4 +1,4 @@
-
+var config = require('../config.js');
 
 exports.requiresLogin = function(req, res, next){
 	if(req.session.passport.user){
@@ -7,7 +7,7 @@ exports.requiresLogin = function(req, res, next){
 		req.session.administrationLevel = req.user[0].administrationLevel;
 		next();
 	} else {
-		res.render('session/login', { title: 'CyberCTF Login' });
+		res.render('session/login', { title: config.brand+ ' Login', config: config });
 	}
 }
 
@@ -18,13 +18,13 @@ exports.requiresAdminLogin = function(req, res, next){
 		req.session.administrationLevel = req.user[0].administrationLevel;
 		next();
 	} else {
-		res.render('session/login', { title: 'CyberCTF Login' });
+		res.render('session/login', { title: config.brand+ ' Login', config: config });
 	}
 }
 
 exports.login = function(req, res) {
 		req.session.path = req.route.path;
-		res.render('session/login', { title: 'CyberCTF Login' });
+		res.render('session/login', { title: config.brand+ ' Login', config: config });
 }
 
 exports.logout = function(req, res) {
@@ -35,5 +35,3 @@ exports.logout = function(req, res) {
 	res.cookie('teamid', null);
 	res.redirect('/');
 }
-
-  

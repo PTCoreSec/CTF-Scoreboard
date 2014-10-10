@@ -1,83 +1,60 @@
-<h1>ptcoresec-scoreboard-ctf</h1>
+# ptcoresec-scoreboard-ctf
 ========================
 
 A scoreboard used for CTF jeopardy style events
 
 This is a scoreboard that can be used for jeopardy style tournaments. It was developed by us to be used in our capture the flag security events.
 
-<h3>INSTALLATION (Version 0.1)</h3>
+### INSTALLATION (Version 0.1)
 
 You need to have NodeJS, Redis and MySQL installed:
 
 We have tested the scoreboard with Ubuntu 12.04 64 bits, NodeJS versions 0.6.12 and 0.8.1, Redis version 2.2.12 and 2.4.15.
 
-<pre>
-<code>
-sudo apt-get update
-sudo apt-get install nodejs redis-server mysql-server
-</pre>
-</code>
+    sudo apt-get update
+    sudo apt-get install nodejs redis-server mysql-server
 
-In the folder DB you will find two SQL scripts to import, tournament.sql (Complete database) and salts.sql (Password salts). 
-<pre>
-<code>
-cd BD
-mysql -u username -p &lt; tournament.sql 
-mysql -u username -p &lt; salts.sql 
-</pre>
-</code>
+In the folder DB you will find two SQL scripts to import, tournament.sql (Complete database) and salts.sql (Password salts).
 
-Go back to the main folder and copy config-example.js to config.js. Next configure the config.js file to use your MySQL database, it will look like this,
-<pre>
-<code>
-var config = {};
+    cd BD
+    mysql -u username -p &lt; tournament.sql
+    mysql -u username -p &lt; salts.sql
 
-config.db = {};
-config.dbHashes = {};
+Go back to the main folder and copy dbconfig-example.js to dbconfig.js. Next dbconfigure the dbconfig.js file to use your MySQL database, it will look like this,
 
-// Complete DB
-config.db.host = 'localhost'; // &lt;-- Insert host
-config.db.user = 'root'; // &lt;-- Insert user
-config.db.password = 'password'; // &lt;-- Insert password
-//Don't Change.
-config.db.database = 'torneio';
+    var dbconfig = {};
 
-// Password Salt DB
-config.dbHashes.host = 'localhost'; // &lt;-- Insert host
-config.dbHashes.user = 'root'; // &lt;-- Insert user
-config.dbHashes.password = 'password'; // &lt;-- Insert password
-//Don't Change.
-config.dbHashes.database = 'passsalts';
+    dbconfig.db = {};
+    dbconfig.dbHashes = {};
 
-module.exports = config;
-</pre>
-</code>
+    // Complete DB
+    dbconfig.db.host = 'localhost'; // <-- Insert host
+    dbconfig.db.user = 'root'; // <-- Insert user
+    dbconfig.db.password = 'password'; // <-- Insert password
+    //Don't Change.
+    dbconfig.db.database = 'torneio';
+
+    // Password Salt DB
+    dbconfig.dbHashes.host = 'localhost'; // &lt;-- Insert host
+    dbconfig.dbHashes.user = 'root'; // &lt;-- Insert user
+    dbconfig.dbHashes.password = 'password'; // &lt;-- Insert password
+    //Don't Change.
+    dbconfig.dbHashes.database = 'passsalts';
+
+    module.exports = dbconfig;
 
 We will now generate keys to be used for HTTPS.
-<br>
+----
 You can generate the privatekey.pem and certificate.pem files using the following commands:
-<pre>
-<code>
-cd keys
-openssl genrsa -out privatekey.pem 1024 
-openssl req -new -key privatekey.pem -out certrequest.csr 
-openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
-</pre>
-</code>
+
+    cd keys
+    openssl genrsa -out privatekey.pem 1024
+    openssl req -new -key privatekey.pem -out certrequest.csr
+    openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
 
 Now you just need to run node.
-<pre>
-<code>
-cd ptcoresec-scoreboard-ctf
-node app.js
-</pre>
-</code>
 
+    cd ptcoresec-scoreboard-ctf
+    node app.js
 
 You can then browse to https://server-address:3000 and login with username Administrator and password 123456
-
-
-
-
-
-
