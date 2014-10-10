@@ -1,20 +1,20 @@
-var dbdbconfig = {};
+var dbconfig = {};
 
-dbdbconfig.db = {};
-dbdbconfig.dbHashes = {};
+dbconfig.db = {};
+dbconfig.dbHashes = {};
 
 // Complete DB
-dbdbconfig.db.host = 'localhost'; // <-- Insert host
-dbdbconfig.db.user = 'root'; // <-- Insert user
-dbdbconfig.db.password = 'password'; // <-- Insert password
+dbconfig.db.host = 'localhost'; // <-- Insert host
+dbconfig.db.user = 'root'; // <-- Insert user
+dbconfig.db.password = 'password'; // <-- Insert password
 //Don't Change.
-dbdbconfig.db.database = 'torneio';
+dbconfig.db.database = 'torneio';
 
 // Password Salt DB
-dbdbconfig.dbHashes.host = 'localhost'; // <-- Insert host
-dbdbconfig.dbHashes.user = 'root'; // <-- Insert user
-dbdbconfig.dbHashes.password = 'password'; // <-- Insert password
+dbconfig.dbHashes.host = 'localhost'; // <-- Insert host
+dbconfig.dbHashes.user = 'root'; // <-- Insert user
+dbconfig.dbHashes.password = 'password'; // <-- Insert password
 //Don't Change.
-dbdbconfig.dbHashes.database = 'passsalts';
+dbconfig.dbHashes.database = 'passsalts';
 
-module.exports = dbdbconfig;
+module.exports = dbconfig;
