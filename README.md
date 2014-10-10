@@ -14,42 +14,42 @@ We have tested the scoreboard with Ubuntu 12.04 64 bits, NodeJS versions 0.6.12 
     sudo apt-get update
     sudo apt-get install nodejs redis-server mysql-server
 
-In the folder DB you will find two SQL scripts to import, tournament.sql (Complete database) and salts.sql (Password salts). 
+In the folder DB you will find two SQL scripts to import, tournament.sql (Complete database) and salts.sql (Password salts).
 
     cd BD
-    mysql -u username -p &lt; tournament.sql 
-    mysql -u username -p &lt; salts.sql 
+    mysql -u username -p &lt; tournament.sql
+    mysql -u username -p &lt; salts.sql
 
-Go back to the main folder and copy config-example.js to config.js. Next configure the config.js file to use your MySQL database, it will look like this,
+Go back to the main folder and copy dbconfig-example.js to dbconfig.js. Next dbconfigure the dbconfig.js file to use your MySQL database, it will look like this,
 
-    var config = {};
-    
-    config.db = {};
-    config.dbHashes = {};
-    
+    var dbconfig = {};
+
+    dbconfig.db = {};
+    dbconfig.dbHashes = {};
+
     // Complete DB
-    config.db.host = 'localhost'; // &lt;-- Insert host
-    config.db.user = 'root'; // &lt;-- Insert user
-    config.db.password = 'password'; // &lt;-- Insert password
+    dbconfig.db.host = 'localhost'; // <-- Insert host
+    dbconfig.db.user = 'root'; // <-- Insert user
+    dbconfig.db.password = 'password'; // <-- Insert password
     //Don't Change.
-    config.db.database = 'torneio';
-    
+    dbconfig.db.database = 'torneio';
+
     // Password Salt DB
-    config.dbHashes.host = 'localhost'; // &lt;-- Insert host
-    config.dbHashes.user = 'root'; // &lt;-- Insert user
-    config.dbHashes.password = 'password'; // &lt;-- Insert password
+    dbconfig.dbHashes.host = 'localhost'; // &lt;-- Insert host
+    dbconfig.dbHashes.user = 'root'; // &lt;-- Insert user
+    dbconfig.dbHashes.password = 'password'; // &lt;-- Insert password
     //Don't Change.
-    config.dbHashes.database = 'passsalts';
-    
-    module.exports = config;
+    dbconfig.dbHashes.database = 'passsalts';
+
+    module.exports = dbconfig;
 
 We will now generate keys to be used for HTTPS.
 ----
 You can generate the privatekey.pem and certificate.pem files using the following commands:
 
     cd keys
-    openssl genrsa -out privatekey.pem 1024 
-    openssl req -new -key privatekey.pem -out certrequest.csr 
+    openssl genrsa -out privatekey.pem 1024
+    openssl req -new -key privatekey.pem -out certrequest.csr
     openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
 
 Now you just need to run node.
@@ -58,4 +58,3 @@ Now you just need to run node.
     node app.js
 
 You can then browse to https://server-address:3000 and login with username Administrator and password 123456
-
