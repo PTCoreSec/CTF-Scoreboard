@@ -14,7 +14,7 @@ var parseCookie = require("cookie").parse;
 var hash = require('node_hash');
 var cluster = require("cluster");
 var numCPUs = require('os').cpus().length;
-var config = require('config.js');
+var config = require('./config.js');
 
 var RedisStore = require('connect-redis')(express);
 var storeSession = new RedisStore;
@@ -271,7 +271,7 @@ app.post('/resetTeamlogs', sessions.requiresAdminLogin, administration.resetTeam
 app.get('/comms', sessions.requiresAdminLogin, administration.comms);
 
 
-	app.listen(3000, function(){
+	app.listen(config.appPort, config.host, function(){
 	console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
   });
 
