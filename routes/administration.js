@@ -2,7 +2,7 @@ var hash = require('node_hash');
 var randomstring = require("randomstring");
 var util = require('util');
 var mysql = require('mysql');
-var connections = require('../BD/db.js');
+var connections = require('../DB/db.js');
 var config = require('../config.js');
 
 connections.connection.on('close', function(err) {

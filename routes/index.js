@@ -5,7 +5,7 @@
 
 var mysql = require('mysql');
 var util = require('util');
-var connections = require('../BD/db.js');
+var connections = require('../DB/db.js');
 var config = require('../config.js');
 
 
