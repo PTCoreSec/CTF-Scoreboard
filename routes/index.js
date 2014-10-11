@@ -12,7 +12,7 @@ var config = require('../config.js');
 connections.connection.on('close', function(err) {
   if (err) {
     // We did not expect this connection to terminate
-	util.log('ligacao caiu mas vou restabelecer');
+	util.log('call went but I will restore');
     connections.connection = mysql.createConnection(connections.connection.config);
   } else {
     // We expected this to happen, end() was called.
@@ -21,7 +21,7 @@ connections.connection.on('close', function(err) {
 
 connections.connection.on('error', function(err) {
   util.log(err.code); // 'ER_BAD_DB_ERROR'
-  	util.log('ligacao caiu mas vou restabelecer');
+  	util.log('call went but I will restore');
     connections.connection = mysql.createConnection(connections.connection.config);
 });
 

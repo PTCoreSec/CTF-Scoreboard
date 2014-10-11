@@ -84,7 +84,7 @@ function startCompetition(randomAdd){
 }
 
 function endCompetition(){
-	util.log('Fim da coisa');
+	util.log('The competion is over');
 
 }
 
@@ -98,8 +98,8 @@ function addRandomProblem(){
 			var problem = rows[randomProblemRow-1].idproblemas;
 			var group = rows[randomProblemRow-1].idgrupos_problemas;
 			//console.log(rows);
-			//console.log('encontrei '+rows.length+' problemas');
-			//console.log('random entre problemas -> '+Math.floor((Math.random()*rows.length)+1));
+			//console.log('Found '+rows.length+' problems');
+			//console.log('Between random problems -> '+Math.floor((Math.random()*rows.length)+1));
 			var openProblem = 'Update problemas SET open = true where idproblemas = '+problem+' and idgrupos_problemas = '+group;
 			connections.connection.query(openProblem, function(err, rows, fields) {
 				if(err) console.log(err);
@@ -523,7 +523,7 @@ function verifyAnswer(socket, teamname, teamid, group, problem, answer){
 																	sio.sockets.emit('answers', { teamname: teamname, teamid: teamid, group: group, problem: problem, correct: correct, sum_of_points: rowsTeamSumOfPoints[0].points, groupname: rowsProblems[0].name, time: (new Date()) });
 																}
 																else{
-																	util.log('erro ao obter pontos');
+																	util.log('Error getting points');
 																}
 															});
 														}
@@ -552,7 +552,7 @@ function verifyAnswer(socket, teamname, teamid, group, problem, answer){
 
 										var query = connections.connection.query(queryInsertLogFalse, function(err, result) {
 											if(err){
-												util.log('Error inserting answer in BD -> '+err);
+												util.log('Error inserting answer in DB -> '+err);
 												util.log(queryInsertLogFalse);
 											}
 											connections.connection.query(sqlTeamSumOfPoints, function(errTeamSumOfPoints, rowsTeamSumOfPoints, fieldsTeamSumOfPoints) {
