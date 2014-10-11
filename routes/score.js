@@ -2,16 +2,17 @@
 /*
  * GET home page.
  */
- 
+
  var mysql      = require('mysql');
  var util = require('util');
- var connections = require('../BD/db.js');
- 
- 
+ var connections = require('../DB/db.js');
+ var config = require('../config.js');
+
+
 connections.connection.on('close', function(err) {
   if (err) {
     // We did not expect this connection to terminate
-	util.log('ligacao caiu mas vou restabelecer');
+	util.log('call went but I will restore');
     connections.connection = mysql.createConnection(connections.connection.config);
   } else {
     // We expected this to happen, end() was called.
@@ -20,12 +21,12 @@ connections.connection.on('close', function(err) {
 
 connections.connection.on('error', function(err) {
   util.log(err.code); // 'ER_BAD_DB_ERROR'
-  	util.log('ligacao caiu mas vou restabelecer');
+  	util.log('call went but I will restore');
     connections.connection = mysql.createConnection(connections.connection.config);
 });
 
 exports.answer= function(req, res){
-	console.log('Recebi uma answer');
+	console.log('Revieved an answer');
 	console.log(req.body);
 
 }
@@ -42,7 +43,7 @@ exports.score = function(req, res){
 			console.log('err - '+errGroups);
 		}
 		if(rowsGroups.length == 0){
-			console.log('Nao encontrei nada');
+			console.log('found nothing');
 			callbackRender(req, res, {}, {});
 		}
 		else{
@@ -50,7 +51,7 @@ exports.score = function(req, res){
 			var totalGroups = 0;
 			for(var i = 0; rowsGroups[i];i++){
 				var sqlProblemas = 'SELECT p.*, SUM(t.correct) as correct FROM problemas as p LEFT JOIN teams_log as t '
-									+' on p.idgrupos_problemas = t.idgrupos_problemas and p.idproblemas = t.idproblemas ' 
+									+' on p.idgrupos_problemas = t.idgrupos_problemas and p.idproblemas = t.idproblemas '
 									+' and t.idteams = '+req.session.teamId+' '
 									+ 'where p.idgrupos_problemas = '+rowsGroups[i].idgrupos_problemas+' '
 									+' group by p.idproblemas ORDER by points';
@@ -76,7 +77,7 @@ exports.score = function(req, res){
 function callbackRender(req, res, groups, problems){
 	var teams = new Array;
 	var sqlConfig = 'SELECT * from config';
-	var sqlTeams = 'SELECT * FROM teams where administrationLevel = 0';		
+	var sqlTeams = 'SELECT * FROM teams where administrationLevel = 0';
 
 	var sqlTeamsPoints = 'SELECT t.idteams, name, sum(p.points) as points, (SELECT data from teams_log where teams_log.idteams = t.idteams order by data desc limit 1) as data '
 		+ ', problems_to_open_level_1, problems_to_open_level_2, problems_to_open_level_3, problems_to_open_level_4 '
@@ -113,7 +114,7 @@ function callbackRender(req, res, groups, problems){
 					level3 = rowsTeams[i].problems_to_open_level_3;
 				}
 			}
-			res.render('score', { title: 'PTCoreSec Scoreboard', thisteam: req.session.teamId, level1: level1, level2: level2, level3: level3, open: open, config: rowsConfig, groups: groups, problems: problems, teams: rowsTeams})
+			res.render('score', { title: config.brand + ' Scoreboard', thisteam: req.session.teamId, level1: level1, level2: level2, level3: level3, open: open, dbconfig: rowsConfig, groups: groups, problems: problems, teams: rowsTeams, config: config})
 		});
 	});
 }

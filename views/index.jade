@@ -11,14 +11,14 @@ block scripts
 	script(type='text/javascript')
 		var chart;
 		var datas = !{JSON.stringify(logs)};
-		var config = !{JSON.stringify(config)};
+		var config = !{JSON.stringify(dbconfig)};
 		var teams = !{JSON.stringify(teams)};
-		
+
 
 		$(document).ready(function() {
 			//Countdown
-			var start = new Date('#{config[0].start_date}');
-				var end = new Date('#{config[0].end_date}');
+			var start = new Date('#{dbconfig[0].start_date}');
+				var end = new Date('#{dbconfig[0].end_date}');
 				var note = $('#note');
 				ts = start;
 				newYear = true;
@@ -29,7 +29,7 @@ block scripts
 						ts = end;
 						newYear = false;
 					}
-							
+
 					$('#countdown').countdown({
 						timestamp	: ts,
 						callback	: function(days, hours, minutes, seconds){
@@ -111,10 +111,10 @@ block scripts
 							'<br>points: <b>'+this.y+'</b>';
 					}
 				},
-				series: datas     
+				series: datas
 			});
 		});
-		
+
 block content
 	div(id='page')
 		div(id='conteudoGeral')
@@ -147,16 +147,16 @@ block content
 																span.exampleborderradiusatop #{group.name}
 															- var problemsFromGroup = problems[i]
 															- each problem in problemsFromGroup
-																if(problem.correct > 0)	
+																if(problem.correct > 0)
 																	div.exampleborderradiusa.pontuacao_correct(group=problem.idgrupos_problemas, problem=problem.idproblemas, id=problem.idgrupos_problemas+''+problem.idproblemas)
 																		span.exampleborderradiusa #{problem.points}
 																- else
 																	- if(problem.open)
 																		div.exampleborderradiusa.pontuacao_no_answer(group=problem.idgrupos_problemas, problem=problem.idproblemas, id=problem.idgrupos_problemas+''+problem.idproblemas)
-																			span.exampleborderradiusa #{problem.points}	
+																			span.exampleborderradiusa #{problem.points}
 																	- else
 																		div.exampleborderradiusa.pontuacao_closed(group=problem.idgrupos_problemas, problem=problem.idproblemas, id=problem.idgrupos_problemas+''+problem.idproblemas)
-																			span.exampleborderradiusa #{problem.points}	
+																			span.exampleborderradiusa #{problem.points}
 													div.legenda.pontuacao_correct
 													div.legenda_text Answered
 													div.legenda.pontuacao_no_answer
@@ -177,16 +177,16 @@ block content
 																	-if(team.idteams == session.passport.user)
 																		tr
 																			td
-																				p(style='color: white;') #{team.name} 
-																			td 
-																				p(style='color: white;') - 
+																				p(style='color: white;') #{team.name}
+																			td
+																				p(style='color: white;') -
 																			td
 																				p(style='color: white;') #{points}
 																	-else
 																		tr
 																			td
-																				p #{team.name} 
-																			td 
-																				p - 
+																				p #{team.name}
+																			td
+																				p -
 																			td
 																				p #{points}

@@ -16,10 +16,6 @@ $(document).ready(function() {
 	  'max reconnection attempts': 100
 	});
 	
-	var snd; // buffers automatically when created
-	//var no = new Audio("yes.mp3"); // buffers automatically when created
-	
-	
 	$('#problem_description').hide();
 	$('#answerInput').hide();
 	$('#submitAnswer').hide();
@@ -89,17 +85,11 @@ $(document).ready(function() {
 				$("div#"+group+''+problema).removeClass("pontuacao_no_answer");
 				$("div#"+group+''+problema).removeClass("pontuacao_selected");
 				$("div#"+group+''+problema).addClass("pontuacao_correct");
-				
-				snd = new Audio("yes.mp3");
-				snd.play();
 			}
 			else{
 				$('#submitAnswer').attr("disabled", false);
 				document.getElementById("feedback").innerHTML ='<p style=\'color:darkred;\'>Computer says No.</p>';
 				$('#feedback').addClass("error");
-				snd = new Audio("no5s.ogg");
-				//snd.play();
-				//setInterval(snd.pause(),2000);
 			}
 		}
 	});
