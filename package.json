@@ -1,24 +1,10 @@
 {
-    "name": "PTCoreSec-Scoreboard-CTF"
+    "name": "CSS15CTF"
   , "version": "0.1"
   , "author": {
-      "name": "PTCoreSec"
-    , "email": "ptcoresec@ptcoresec.eu"
+      "name": "49th Security Division"
+    , "email": "49thsd@gmail.com"
   }
-  , "contributors": [
-      {	
-         "name": "Gank"
-       , "email": "Gank@ptcoresec.eu"
-      }
-     ,{
-         "name": "Maluko"
-       , "email": "Maluko@ptcoresec.eu"
-      }
-     ,{
-         "name": "Balgan"
-       , "email": "Balgan@ptcoresec.eu"
-      }
-  ]
   , "dependencies": {
       "express": "2.5.8"
     , "jade": "0.26.3"
