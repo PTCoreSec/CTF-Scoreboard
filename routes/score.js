@@ -12,7 +12,7 @@
 connections.connection.on('close', function(err) {
   if (err) {
     // We did not expect this connection to terminate
-	util.log('ligacao caiu mas vou restabelecer');
+	util.log('call went but I will restore');
     connections.connection = mysql.createConnection(connections.connection.config);
   } else {
     // We expected this to happen, end() was called.
@@ -21,12 +21,12 @@ connections.connection.on('close', function(err) {
 
 connections.connection.on('error', function(err) {
   util.log(err.code); // 'ER_BAD_DB_ERROR'
-  	util.log('ligacao caiu mas vou restabelecer');
+  	util.log('call went but I will restore');
     connections.connection = mysql.createConnection(connections.connection.config);
 });
 
 exports.answer= function(req, res){
-	console.log('Recebi uma answer');
+	console.log('Revieved an answer');
 	console.log(req.body);
 
 }
@@ -43,7 +43,7 @@ exports.score = function(req, res){
 			console.log('err - '+errGroups);
 		}
 		if(rowsGroups.length == 0){
-			console.log('Nao encontrei nada');
+			console.log('found nothing');
 			callbackRender(req, res, {}, {});
 		}
 		else{
