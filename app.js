@@ -14,6 +14,7 @@ var parseCookie = require("cookie").parse;
 var hash = require('node_hash');
 var cluster = require("cluster");
 var numCPUs = require('os').cpus().length;
+var config = require('config.js');
 
 var RedisStore = require('connect-redis')(express);
 var storeSession = new RedisStore;
@@ -26,7 +27,7 @@ var credentials = crypto.createCredentials({key: privateKey, cert: certificate})
 connections.connection.on('close', function(err) {
   if (err) {
     // We did not expect this connection to terminate
-	util.log('ligacao caiu mas vou restabelecer');
+	util.log('We did not expect this connection to terminate');
     connections.connection = mysql.createConnection(connections.connection.config);
   } else {
     // We expected this to happen, end() was called.
@@ -36,7 +37,7 @@ connections.connection.on('close', function(err) {
 connections.connectionHashes.on('close', function(err) {
   if (err) {
     // We did not expect this connection to terminate
-	util.log('ligacao caiu mas vou restabelecer');
+	util.log('We did not expect this connection to terminate');
     connections.connectionHashes = mysql.createConnection(connections.connectionHashes.config);
   } else {
     // We expected this to happen, end() was called.
@@ -45,13 +46,13 @@ connections.connectionHashes.on('close', function(err) {
 
 connections.connection.on('error', function(err) {
   util.log(err.code); // 'ER_BAD_DB_ERROR'
-  	util.log('ligacao caiu mas vou restabelecer');
+  	util.log('Bad Scoreboard DB Error');
     connections.connection = mysql.createConnection(connections.connection.config);
 });
 
 connections.connectionHashes.on('error', function(err) {
   util.log(err.code); // 'ER_BAD_DB_ERROR'
-  	util.log('ligacao caiu mas vou restabelecer');
+  	util.log('Bad Hashes DB Error');
     connections.connectionHashes = mysql.createConnection(connections.connectionHashes.config);
 });
 
@@ -65,7 +66,7 @@ connections.connection.query(sqlConfig, function(errConfig, rowsConfig, fieldsCo
 		var start = new Date(rowsConfig[0].start_date).getTime();
 		var end = new Date(rowsConfig[0].start_end).getTime();
 		var randomAdd = rowsConfig[0].random_problem_opening_interval*60*1000;
-		
+
 		var timeToStart = Date.now().getTime - start.getTime;
 		if(agora >= start){
 			addProblemTimer = setInterval(addRandomProblem, randomAdd);
@@ -76,7 +77,7 @@ connections.connection.query(sqlConfig, function(errConfig, rowsConfig, fieldsCo
 });
 
 function startCompetition(randomAdd){
-	util.log('Start a coisa, novo problema a cada '+randomAdd+'ms');
+	util.log('Lets start this thing, addin a random problem.');
 	clearInterval(startTimer);
 	setInterval(addRandomProblem, randomAdd);
 	sio.sockets.emit('start');
@@ -84,7 +85,7 @@ function startCompetition(randomAdd){
 
 function endCompetition(){
 	util.log('Fim da coisa');
-	
+
 }
 
 function addRandomProblem(){
@@ -111,10 +112,10 @@ function addRandomProblem(){
 						connections.connection.query(checkTeamOpenStuff, function(err, rowsuCanOpen, fields) {
 							if(err) console.log(err);
 							else{
-								
+
 
 								socket.emit('uCanOpen', { level1: rowsuCanOpen[0].problems_to_open_level_1,  level2: rowsuCanOpen[0].problems_to_open_level_2, level3: rowsuCanOpen[0].problems_to_open_level_3});
-								
+
 							}
 						});
 					}
@@ -160,7 +161,7 @@ app.dynamicHelpers(
     session: function(req, res) {
       return req.session;
     },
-    
+
     flash: function(req, res) {
       return req.flash();
     }
@@ -179,18 +180,18 @@ passport.serializeUser(function(user, done) {
 	done(null, user.idteams);
 });
 
-passport.deserializeUser(function(id, done) {	
+passport.deserializeUser(function(id, done) {
 	var sql = 'SELECT * FROM teams WHERE idteams = ' + connections.connection.escape(id);
-	
+
 	connections.connection.query(sql, function(err, rows, fields) {
 		done(err, rows);
 	});
 });
 
 passport.use(new LocalStrategy(
-  function(username, password, done) {	
+  function(username, password, done) {
 	var sql = 'SELECT * FROM teams WHERE name = ' + connections.connection.escape(username);
-	
+
 	connections.connection.query(sql, function(err, rows, fields) {
 		if (err) { return done(err); }
 		if(rows.length == 0){
@@ -299,7 +300,7 @@ sio.sockets.on('connection', function (socket) {
 		util.log('erro -> '+err);
 	}
 
-  
+
 	socket.on('answer', function (data) {
 		var teamid = parseCookie(socket.handshake.headers.cookie).teamid;
 		var teamname = parseCookie(socket.handshake.headers.cookie).teamname;
@@ -308,7 +309,7 @@ sio.sockets.on('connection', function (socket) {
 		var answer = data.answer;
 		verifyAnswer(socket, teamname, teamid, group, problem, answer);
 	});
-	
+
 	socket.on('reloadConfig', function (data) {
 		clearInterval(startTimer);
 		clearInterval(addProblemTimer);
@@ -329,11 +330,11 @@ sio.sockets.on('connection', function (socket) {
 		});
 		sio.sockets.emit('start');
 	});
-	
+
 	socket.on('globalMessage', function (data) {
 		sio.sockets.emit('globalMessage', data);
 	});
-	
+
 	socket.on('adminActivateProblem', function (data) {
 		var openProblem = 'Update problemas SET open = true where idproblemas = '+data.problem+' and idgrupos_problemas = '+data.group;
 		connections.connection.query(openProblem, function(err, rows, fields) {
@@ -354,20 +355,20 @@ sio.sockets.on('connection', function (socket) {
 			}
 		});
 	});
-	
+
 	socket.on('openProblem', function (data) {
 		var idproblema = data.problem;
 		var idgroup = data.group;
 		var sqlProblem = 'SELECT * from problemas where idgrupos_problemas = '+idgroup+' and idproblemas = '+idproblema;
 		connections.connection.query(sqlProblem, function(err, rows, fields) {
 			if(err) util.log(err);
-			
+
 			if(rows.length > 0){
 				var open = rows[0].open;
 				if(open){
 					console.log('dafuq, already open');
 				}
-				
+
 				else{
 					var level = rows[0].level;
 					var sqlTeams = 'SELECT * FROM teams where idteams = '+socket.teamid;
@@ -410,10 +411,10 @@ sio.sockets.on('connection', function (socket) {
 					});
 				}
 			}
-			
+
 		});
 	});
-	
+
 	socket.on('getProblem', function (data) {
 		var idproblema = data.problem;
 		var idgroup = data.group;
@@ -421,7 +422,7 @@ sio.sockets.on('connection', function (socket) {
 		connections.connection.query(sqlProblem, function(err, rows, fields) {
 			if(err) util.log(err);
 			var description = '';
-			
+
 			if(rows.length > 0){
 				description = rows[0].description;
 				var open = rows[0].open;
@@ -435,7 +436,7 @@ sio.sockets.on('connection', function (socket) {
 function verifyAnswer(socket, teamname, teamid, group, problem, answer){
 	//Ver se ainda aceita respostas
 	var sqlConfig = 'SELECT * from config';
-	
+
 	var sqlTeamsPoints = 'SELECT t.idteams, name, sum(p.points) as points, (SELECT data from teams_log where teams_log.idteams = t.idteams order by data desc limit 1) as data '
 										+'FROM teams '
 										+'LEFT JOIN teams_log as t  on t.idteams = teams.idteams  '
@@ -454,7 +455,7 @@ function verifyAnswer(socket, teamname, teamid, group, problem, answer){
 
 
 	var sqlCheckifAlreadyAnswered = 'SELECT * from teams_log as t where t.idteams = '+teamid+' and t.idgrupos_problemas = '+group+' and t.idproblemas = '+problem+' and t.correct = 1';
-	
+
 	var sqlVerifyAnswer = '	SELECT * from problemas as p, grupos_problemas as g where g.idgrupos_problemas = p.idgrupos_problemas and p.idgrupos_problemas = '+group+' and p.idproblemas ='+problem;
 
 
@@ -462,24 +463,24 @@ function verifyAnswer(socket, teamname, teamid, group, problem, answer){
 	var somapontos = 0;
 	var correct = false;
 	connections.connection.query(sqlConfig, function(err, rowsConfig, fields) {
-		//Verificar se ainda está a decorrer
+		//Verificar se ainda estï¿½ a decorrer
 		if(now > rowsConfig[0].start_date && now < rowsConfig[0].end_date){
-			//Ver se já respondeu
+			//Ver se jï¿½ respondeu
 			connections.connection.query(sqlCheckifAlreadyAnswered, function(err, rows, fields) {
-				if(err){ 
+				if(err){
 					util.log(sqlCheckifAlreadyAnswered);
 					util.log(err);
 				}
 				if(rows.length == 0){
 					connections.connection.query(sqlVerifyAnswer, function(err, rowsProblems, fields) {
-						if(err){ 
+						if(err){
 							util.log(sqlVerifyAnswer);
 							util.log(err);
 						}
 						if(rowsProblems.length > 0){
 							if(answer.toUpperCase() == rowsProblems[0].resposta.toUpperCase()){
 								correct = true;
-								
+
 								var querySoma = 'SELECT sum_of_points from teams_log where idteams = '+teamid+' order by data desc limit 1';
 								connections.connection.query(querySoma, function(err, result) {
 									if(err){
@@ -510,7 +511,7 @@ function verifyAnswer(socket, teamname, teamid, group, problem, answer){
 													var checkTeamOpenStuff = 'Select * from teams where idteams = '+teamid;
 													connections.connection.query(checkTeamOpenStuff, function(err, rowsuCanOpen, fields) {
 														if(err) console.log(err);
-														else{	
+														else{
 															if((rowsProblems[0].level+1) <= 4){
 																var msg = 'Congrats, u can now open a problem from level '+(rowsProblems[0].level+1)+'.';
 																socket.emit('globalMessage', { message: msg, sticky: false});
@@ -537,20 +538,20 @@ function verifyAnswer(socket, teamname, teamid, group, problem, answer){
 								correct = false;
 								var querySumDosPontos = 'SELECT t.sum_of_points as points1 from teams_log as t where t.idteams = '+teamid+' order by t.data desc limit 1';
 								var query = connections.connection.query(querySumDosPontos, function(err, result) {
-									if(err){ 
+									if(err){
 										util.log(err);
 										util.log(querySumDosPontos);
 									}
 									else {
 										var soma = 0;
-										if(result.length>0){ 
+										if(result.length>0){
 											soma = result[0].points1;
 										}
 										var queryInsertLogFalse ='INSERT INTO teams_log (idteams ,data ,resposta ,correct ,idgrupos_problemas,idproblemas,sum_of_points) '
 											+' VALUES ('+teamid+',NOW(),\''+answer+'\','+0+','+group+','+problem+', '+soma+') ';
-													
+
 										var query = connections.connection.query(queryInsertLogFalse, function(err, result) {
-											if(err){ 
+											if(err){
 												util.log('Error inserting answer in BD -> '+err);
 												util.log(queryInsertLogFalse);
 											}
@@ -566,7 +567,7 @@ function verifyAnswer(socket, teamname, teamid, group, problem, answer){
 									}
 								});
 
-							}							
+							}
 						}
 					});
 				}
@@ -580,5 +581,3 @@ function verifyAnswer(socket, teamname, teamid, group, problem, answer){
 	});
 
 }
-
-
