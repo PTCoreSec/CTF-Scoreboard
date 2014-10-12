@@ -1,4 +1,4 @@
-ptcoresec-scoreboard-ctf
+CTF-Scoreboard
 ========================
 
 ========================
