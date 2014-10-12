@@ -43,9 +43,9 @@ exports.index = function(req, res){
 			for(var i = 0; rowsGroups[i];i++){
 				var sqlProblemas = 'SELECT p.*, SUM(t.correct) as correct FROM problemas as p LEFT JOIN teams_log as t '
 									+' on p.idgrupos_problemas = t.idgrupos_problemas and p.idproblemas = t.idproblemas '
-									+ 'where p.idgrupos_problemas = '+rowsGroups[i].idgrupos_problemas+' '
+									+ 'where p.idgrupos_problemas = ? '
 									+' group by p.idproblemas ORDER by points';
-				connections.connection.query(sqlProblemas, function(err, rows, fields) {
+				connections.connection.query(sqlProblemas, [rowsGroups[i].idgrupos_problemas], function(err, rows, fields) {
 					if(err){
 						console.log('err - '+err);
 						totalGroups++;

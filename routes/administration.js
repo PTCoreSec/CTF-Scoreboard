@@ -38,8 +38,6 @@ connections.connectionHashes.on('error', function(err) {
 });
 
 
-
-
 exports.dashTemplate = function(req, res) {
 	res.render('admin/dashboard');
 }
@@ -73,9 +71,9 @@ exports.listTeams = function(req, res) {
 }
 
 exports.showEditTeam = function(req, res) {
-	var sqlQuery = 'SELECT * FROM teams WHERE idteams = ' + connections.connection.escape(req.params.id);
+	var sqlQuery = 'SELECT * FROM teams WHERE idteams = ?';
 
-	connections.connection.query(sqlQuery, function(err, result) {
+	connections.connection.query(sqlQuery, [req.params.id], function(err, result) {
 		if(err) console.log(err);
 
 		res.render('admin/edit/editTeam', {team: result[0]});
@@ -83,9 +81,9 @@ exports.showEditTeam = function(req, res) {
 }
 
 exports.editTeam = function(req, res) {
-	var sqlUpdate = 'UPDATE teams tm SET tm.name = ' + connections.connection.escape(req.body.teamName) + ', tm.description = ' + connections.connection.escape(req.body.description) + ' WHERE tm.idteams = ' + connections.connection.escape(req.params.id);
+	var sqlUpdate = 'UPDATE teams tm SET tm.name = ?, tm.description = ? WHERE tm.idteams = ?';
 
-	connections.connection.query(sqlUpdate, function(err, result) {
+	connections.connection.query(sqlUpdate, [req.body.teamName, req.body.description, req.params.id], function(err, result) {
 		if(err) console.log(err);
 
 		res.redirect('/editTeam/'+req.params.id);
@@ -93,13 +91,13 @@ exports.editTeam = function(req, res) {
 }
 
 exports.deleteTeam = function(req, res) {
-	var sqlDeleteTeam = 'DELETE FROM teams WHERE idteams = ' + connections.connection.escape(req.params.id);
-	var sqlDeleteTeamLog = 'DELETE FROM teams_log WHERE idteams = ' + connections.connection.escape(req.params.id);
+	var sqlDeleteTeam = 'DELETE FROM teams WHERE idteams = ?';
+	var sqlDeleteTeamLog = 'DELETE FROM teams_log WHERE idteams = ?';
 
-	connections.connection.query(sqlDeleteTeamLog, function(err, result) {
+	connections.connection.query(sqlDeleteTeamLog, [req.params.id], function(err, result) {
 		if (err) console.log(err);
 
-		connections.connection.query(sqlDeleteTeam, function(err, result) {
+		connections.connection.query(sqlDeleteTeam, [req.params.id], function(err, result) {
 			if (err) console.log(err);
 
 			res.redirect('/listTeams');
@@ -124,9 +122,9 @@ exports.insertCategory = function(req, res) {
 }
 
 exports.showEditCategory = function(req, res) {
-	var sqlQuery = 'SELECT * FROM grupos_problemas WHERE idgrupos_problemas = ' + connections.connection.escape(req.params.id);
+	var sqlQuery = 'SELECT * FROM grupos_problemas WHERE idgrupos_problemas = ?';
 
-	connections.connection.query(sqlQuery, function(err, result) {
+	connections.connection.query(sqlQuery, [req.params.id], function(err, result) {
 		if (err) console.log(err);
 
 		res.render('admin/edit/editCategory', {category: result[0]});
@@ -134,12 +132,10 @@ exports.showEditCategory = function(req, res) {
 }
 
 exports.editCategory = function(req, res) {
-	var sqlUpdate = 'UPDATE grupos_problemas gp SET gp.name = ' + connections.connection.escape(req.body.categoryName) + ', gp.desc = ' + connections.connection.escape(req.body.description) + ' WHERE gp.idgrupos_problemas = ' + connections.connection.escape(req.params.id);
-	//console.log(sqlUpdate);
-	connections.connection.query(sqlUpdate, function(err, result) {
+	var sqlUpdate = 'UPDATE grupos_problemas gp SET gp.name = ?, gp.desc = ? WHERE gp.idgrupos_problemas = ?';
+	var query = connections.connection.query(sqlUpdate, [req.body.categoryName, req.body.description, req.body.id], function(err, result) {
 		if (err) console.log(err);
 
-		//console.log(result);
 		res.redirect('/editCategory/'+req.params.id);
 	});
 }
@@ -147,26 +143,19 @@ exports.editCategory = function(req, res) {
 exports.listCategories = function(req, res) {
 	connections.connection.query('select * from grupos_problemas order by idgrupos_problemas', function(err, result){
 		if(err) console.log(err);
-		//console.log(result);
 		res.render('admin/list/listCategories', {categories: result});
 	});
 
 }
 
 exports.deleteCategory = function(req, res) {
-	var sqlDeleteCategory = 'DELETE FROM grupos_problemas WHERE idgrupos_problemas = ' + connections.connection.escape(req.params.id);
-	var sqlDeleteCategoryProblems = 'DELETE FROM problemas WHERE idgrupos_problemas = ' + connections.connection.escape(req.params.id);
+	var sqlDeleteCategory = 'DELETE FROM grupos_problemas WHERE idgrupos_problemas = ?';
+	var sqlDeleteCategoryProblems = 'DELETE FROM problemas WHERE idgrupos_problemas = ?';
 
-	connections.connection.query(sqlDeleteCategoryProblems, function(err, result) {
+	connections.connection.query(sqlDeleteCategoryProblems, [req.params.id], function(err, result) {
 		if (err) console.log(err);
-
-		//console.log(result);
-
-		connections.connection.query(sqlDeleteCategory, function(err, result) {
+		connections.connection.query(sqlDeleteCategory, [req.params.id], function(err, result) {
 			if (err) console.log(err);
-
-			//console.log(result);
-
 			res.redirect('/listCategories');
 		});
 	});
@@ -194,28 +183,26 @@ exports.insertProblem = function(req, res) {
 }
 
 exports.showEditProblem = function(req, res) {
-	var sqlQuery = 'SELECT * FROM problemas WHERE idproblemas = ' + connections.connection.escape(req.params.id);
+	var sqlQuery = 'SELECT * FROM problemas WHERE idproblemas = ?';
 	var problema;
 	var categorias;
 
 	//console.log(sqlQuery);
-	connections.connection.query(sqlQuery, function(err, result) {
+	connections.connection.query(sqlQuery, [req.params.id], function(err, result) {
 		if (err) console.log(err);
 		problema = result[0];
 		connections.connection.query('select * from grupos_problemas order by idgrupos_problemas', function(err, result){
 			if(err) console.log(err);
 			categorias = result;
-			//console.log(problema);
-			//console.log(categorias);
 			res.render('admin/edit/editProblem', {problem: problema, categories: categorias});
 		});
 	});
 }
 
 exports.editProblem = function(req, res) {
-	var sqlUpdate = 'UPDATE problemas prob SET prob.idgrupos_problemas = ' + connections.connection.escape(req.body.category) + ', prob.resposta = ' + connections.connection.escape(req.body.answer) + ', prob.points = ' + connections.connection.escape(req.body.points) + ', prob.description = ' + connections.connection.escape(req.body.description) + ', prob.level = '+ connections.connection.escape(req.body.level)+' WHERE prob.idproblemas = ' + connections.connection.escape(req.params.id);
+	var sqlUpdate = 'UPDATE problemas prob SET prob.idgrupos_problemas = ?, prob.resposta = ?, prob.points = ?, prob.description = ?, prob.level = ? WHERE prob.idproblemas = ?';
 
-	connections.connection.query(sqlUpdate, function(err, result) {
+	connections.connection.query(sqlUpdate, [req.body.category, req.body.answer, req.body.points, req.body.description, req.body.level, req.params.id], function(err, result) {
 		if(err) console.log(err);
 
 		res.redirect('/editProblem/'+req.params.id);
@@ -233,15 +220,15 @@ exports.listProblems = function(req, res) {
 }
 
 exports.deleteProblem = function(req, res) {
-	var sqlDeleteProblem = 'DELETE FROM problemas WHERE idproblemas = ' + connections.connection.escape(req.params.id);
-	var sqlDeleteProblemTeamLog = 'DELETE FROM teams_log WHERE idproblemas = ' + connections.connection.escape(req.params.id);
+	var sqlDeleteProblem = 'DELETE FROM problemas WHERE idproblemas = ?';
+	var sqlDeleteProblemTeamLog = 'DELETE FROM teams_log WHERE idproblemas = ?';
 
-	connections.connection.query(sqlDeleteProblemTeamLog, function(err, result) {
+	connections.connection.query(sqlDeleteProblemTeamLog, [req.params.id], function(err, result) {
 		if (err) console.log(err);
 
 		//console.log(result);
 
-		connections.connection.query(sqlDeleteProblem, function(err, result) {
+		connections.connection.query(sqlDeleteProblem, [req.params.id], function(err, result) {
 			if (err) console.log(err);
 
 			//console.log(result);
