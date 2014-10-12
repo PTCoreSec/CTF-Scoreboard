@@ -104,10 +104,10 @@ exports.editTeamPassword = function(req, res) {
     console.log("Passwords do not match");
     res.json({message: "Passwords do not match", success: false});
   }
-  else if (!validator.matches(teamPassword, config.passwordComplexityRegex)) {
+  /*else if (!validator.matches(teamPassword, config.passwordComplexityRegex)) {
     console.log("Password doesn't meet complexity requirements");
     res.json({message: "Password doesn't meet complexity requirements", success: false});
-  }
+  }*/
   else {
     console.log("Changing passwords");
     var passwordQuery = 'UPDATE teams tm SET tm.password = ? WHERE tm.idteams = ?';
