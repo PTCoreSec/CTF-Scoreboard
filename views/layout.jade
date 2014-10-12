@@ -1,7 +1,7 @@
 !!! 5
-html(lang='pt-PT')
+html(lang='en-US')
 	head
-		title PTCoreSec
+		title #{title}
 		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
 		link(rel='stylesheet', href='/stylesheets/style.css')
 		link(rel='stylesheet', href='/stylesheets/jquery.countdown.css')
@@ -16,7 +16,7 @@ html(lang='pt-PT')
 			div.navbar
 				div.navbar-inner
 					div.container(style='height:40px;')
-						a(href='http://www.ptcoresec.eu/').brand PTCoreSec
+						a(href='#{config.url}').brand #{config.brand}
 						div.nav-collapse
 							ul.nav
 								if(session.path == '/')
@@ -43,7 +43,7 @@ html(lang='pt-PT')
 											li
 												a(href='/score') My Scoreboard
 
-												
+
 							ul.nav.pull-right
 								- if (session.passport.user)
 									ul.nav
@@ -57,8 +57,8 @@ html(lang='pt-PT')
 									- else
 										userType = 'Team '
 									li
-										p.navbar-text #{userType} 
-											a(href='/', id='teamId', team='#{session.passport.user}') #{session.user}  
+										p.navbar-text #{userType}
+											a(href='/', id='teamId', team='#{session.passport.user}') #{session.user}
 									li.divider-vertical
 									li
 										p.navbar-text
@@ -70,6 +70,8 @@ html(lang='pt-PT')
 												div(id='countdown')
 												p(id='note')
 									ul.nav.nav-tabs.pull-right.signin-menu
+										li.register
+											a(href='/register') Register
 										li.dropdown(id='menu1')
 											a.dropdown-toggle(data-toggle='dropdown', href='#menu1') Login
 												b.caret
@@ -82,7 +84,7 @@ html(lang='pt-PT')
 															input(style="margin-top: 8px", type='password', name='password', id='password', placeholder='Password')
 														button.btn.primary(type='submit') Login
 		block content
-		
+
 		footer
 			script(src='../javascripts/jquery.toastmessage.js')
 			script(src='../javascripts/jquery-ui.min.js')
