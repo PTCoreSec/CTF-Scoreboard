@@ -1,6 +1,6 @@
 {
-    "name": "CSS15CTF"
-  , "version": "0.1"
+    "name": "CTF-Scoreboard"
+  , "version": "1.0.0"
   , "author": {
       "name": "49th Security Division"
     , "email": "49thsd@gmail.com"
@@ -17,5 +17,6 @@
     , "randomstring": "1.0.1"
     , "redis": "0.7.2"
     , "socket.io": "0.9.6"
+    , "validator": "3.19.1"
   }
 }
