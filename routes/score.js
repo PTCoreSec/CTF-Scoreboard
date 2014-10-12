@@ -52,10 +52,10 @@ exports.score = function(req, res){
 			for(var i = 0; rowsGroups[i];i++){
 				var sqlProblemas = 'SELECT p.*, SUM(t.correct) as correct FROM problemas as p LEFT JOIN teams_log as t '
 									+' on p.idgrupos_problemas = t.idgrupos_problemas and p.idproblemas = t.idproblemas '
-									+' and t.idteams = '+req.session.teamId+' '
-									+ 'where p.idgrupos_problemas = '+rowsGroups[i].idgrupos_problemas+' '
+									+' and t.idteams = ? '
+									+ 'where p.idgrupos_problemas = ? '
 									+' group by p.idproblemas ORDER by points';
-				connections.connection.query(sqlProblemas, function(err, rows, fields) {
+				connections.connection.query(sqlProblemas, [req.session.teamId, rowsGroups[i].idgrupos_problemas], function(err, rows, fields) {
 					if(err){
 						console.log('err - '+err);
 						totalGroups++;
