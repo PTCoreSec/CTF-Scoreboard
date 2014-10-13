@@ -19,6 +19,20 @@ block content
               .submit_link
                 input.alt_btn(type='submit', value='Submit')
                 input(type='submit', value='Reset')
-      //
-         end of post new article 
+        form#teamEditPassword
+          header
+            h3 Edit Team Password
+          .module_content
+            input(type='hidden', name='teamid', id='teamid', value='#{team.idteams}')
+            fieldset
+              label Team Password
+              input(type='password', name='teamPassword', id='teamPassword', value='')
+            fieldset
+              label Confirm Team Password
+              input(type='password', name='confirmTeamPassword', id='confirmTeamPassword',, value='')
+            .clear
+          footer
+            .submit_link
+              input.alt_btn(type='submit', value='Submit')
+              input(type='submit', value='Reset')
       .spacer

@@ -9,6 +9,8 @@ block content
 			div.row
 				div.login-form
 					form(action='/login', method='POST')
+						- if (typeof message !== "undefined")
+							p.message #{message}
 						fieldset
 							div.clearfix
 								input.text-input(type='text', name='username', id='username', placeholder='User')

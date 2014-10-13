@@ -1,8 +1,8 @@
 !!! 5
-html(lang='en')
+html(lang='en-US')
 head
     meta(charset='utf-8')
-    title PTCoreSec Admin Panel
+    title #{title}
     link(rel='stylesheet', href='/css/layout.css', type='text/css', media='screen')
     //if lt IE 9
       link(rel='stylesheet', href='/css/ie.css', type='text/css', media='screen')
@@ -41,16 +41,16 @@ head
     header#header
       hgroup
         h1.site_title
-          a(href='/dashboard')  PTCoreSec Admin
+          a(href='/dashboard') #{title}
         //
           h2.section_title Dashboard
     //
-       end of header bar 
+       end of header bar
     section#secondary_bar
       .user
         p #{session.user}
         //
-           <a class="logout_user" href="#" title="Logout">Logout</a> 
+           <a class="logout_user" href="#" title="Logout">Logout</a>
     aside#sidebar.column
       h3 Manage Teams
       ul.toggle
@@ -87,9 +87,9 @@ head
           a(href='/comms') Communications
         li.icn_jump_back
           a(href='/logout') Logout
-    //end of sidebar 
+    //end of sidebar
     block content
-    
+
     footer
         script(src='/socket.io/socket.io.js')
         block footer
