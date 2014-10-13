@@ -245,6 +245,7 @@ app.get('/editTeam/:id', sessions.requiresAdminLogin, administration.showEditTea
 app.post('/editTeam/:id', sessions.requiresAdminLogin, administration.editTeam);
 app.get('/listTeams', sessions.requiresAdminLogin, administration.listTeams);
 app.get('/deleteTeam/:id', sessions.requiresAdminLogin, administration.deleteTeam);
+app.post('/editTeamPassword', sessions.requiresAdminLogin, administration.editTeamPassword);
 
 app.get('/addChallenge', sessions.requiresAdminLogin, administration.addChallenge);
 app.get('/listChallenges', sessions.requiresAdminLogin, administration.listChallenges);

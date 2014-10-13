@@ -2,6 +2,7 @@ var hash = require('node_hash');
 var randomstring = require("randomstring");
 var util = require('util');
 var mysql = require('mysql');
+var validator = require('validator');
 var connections = require('../DB/db.js');
 var config = require('../config.js');
 
@@ -39,11 +40,11 @@ connections.connectionHashes.on('error', function(err) {
 
 
 exports.dashTemplate = function(req, res) {
-	res.render('admin/dashboard');
+	res.render('admin/dashboard', {title: config.brand + " Admin Panel"});
 }
 
 exports.addTeam = function(req, res) {
-	res.render('admin/insert/addTeam');
+	res.render('admin/insert/addTeam', {title: config.brand + " Admin Panel"});
 }
 
 exports.insertTeam = function(req, res) {
@@ -90,6 +91,36 @@ exports.editTeam = function(req, res) {
 	});
 }
 
+exports.editTeamPassword = function(req, res) {
+  var teamName = req.body.teamName;
+  var teamID = req.body.teamid;
+  var teamPassword = req.body.teamPassword;
+  var confirmTeamPassword = req.body.confirmTeamPassword;
+
+  var salt = randomstring.generate(20);
+  var password = hash.sha512(teamPassword, salt);
+
+  if (teamPassword != confirmTeamPassword) {
+    console.log("Passwords do not match");
+    res.json({message: "Passwords do not match", success: false});
+  }
+  else if (!validator.matches(teamPassword, "(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;&quot;:;'?/&gt;.&lt;,]).*$")) {
+    console.log("Password doesn't meet complexity requirements");
+    res.json({message: "Password doesn't meet complexity requirements", success: false});
+  }
+  else {
+    console.log("Changing passwords");
+    var passwordQuery = 'UPDATE teams tm SET tm.password = ? WHERE tm.idteams = ?';
+    var saltQuery = 'UPDATE userHashes uh SET uh.salt = ? WHERE uh.idteams = ?'
+    connections.connection.query(passwordQuery, [password, teamID], function(err, result) {
+      if(err) console.log(err);
+      connections.connectionHashes.query(saltQuery, [salt, teamID], function(err, result) {
+        res.json({message: "Password changed successfully", success: true});
+      })
+    });
+  }
+}
+
 exports.deleteTeam = function(req, res) {
 	var sqlDeleteTeam = 'DELETE FROM teams WHERE idteams = ?';
 	var sqlDeleteTeamLog = 'DELETE FROM teams_log WHERE idteams = ?';
@@ -106,18 +137,18 @@ exports.deleteTeam = function(req, res) {
 }
 
 exports.addChallenge = function(req, res) {
-	res.render('admin/insert/addChallenge', title: config.brand + " Admin Panel");
+	res.render('admin/insert/addChallenge', {title: config.brand + " Admin Panel"});
 }
 
 exports.addCategory = function(req, res) {
-	res.render('admin/insert/addCategory', title: config.brand + " Admin Panel");
+	res.render('admin/insert/addCategory', {title: config.brand + " Admin Panel"});
 }
 
 exports.insertCategory = function(req, res) {
 	connections.connection.query('INSERT INTO torneio.grupos_problemas SET ?', {name: req.body.categoryName, desc: req.body.description}, function(err, result) {
 		if (err) console.log(err);
 
-		res.render('admin/insert/addCategory', title: config.brand + " Admin Panel");
+		res.render('admin/insert/addCategory', {title: config.brand + " Admin Panel"});
 	});
 }
 
@@ -301,7 +332,7 @@ exports.comms = function(req, res) {
 		if(err) throw err;
 		connection.query(sqlConfig, function(errConfig, rowsConfig, fieldsConfig) {
 			if(errConfig) throw errConfig;*/
-			res.render('admin/config/comms', title: config.brand + " Admin Panel");
+			res.render('admin/config/comms', {title: config.brand + " Admin Panel"});
 
 		/*});
 	});*/
