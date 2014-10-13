@@ -104,7 +104,7 @@ exports.editTeamPassword = function(req, res) {
     console.log("Passwords do not match");
     res.json({message: "Passwords do not match", success: false});
   }
-  else if (!validator.matches(teamPassword, "(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;&quot;:;'?/&gt;.&lt;,]).*$")) {
+  else if (!validator.matches(teamPassword, config.passwordComplexityRegex)) {
     console.log("Password doesn't meet complexity requirements");
     res.json({message: "Password doesn't meet complexity requirements", success: false});
   }

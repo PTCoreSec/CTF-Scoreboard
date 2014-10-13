@@ -21,7 +21,7 @@ exports.checkRegistration = function(req, res) {
 	else if (teamPassword != confirmTeamPassword) {
 		res.render("session/register", {message: "Passwords do not match", title: config.brand + ' Registration', username: teamName, config: config});
 	}
-	else if (!validator.matches(teamPassword, "(?=^.{8,30}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;&quot;:;'?/&gt;.&lt;,]).*$")) {
+	else if (!validator.matches(teamPassword, config.passwordComplexityRegex)) {
 		res.render("session/register", {message: "Password doesn't pass complexity requirements", title: config.brand + ' Registration', username: teamName, config:config});
 	}
 	else if((teamName != "") && (teamPassword != "" )) {
