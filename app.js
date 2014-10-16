@@ -473,7 +473,7 @@ function verifyAnswer(socket, teamname, teamid, group, problem, answer){
 					util.log(err);
 				}
 				if(rows.length == 0){
-					connections.connection.query(sqlVerifyAnswer, [group, answer], function(err, rowsProblems, fields) {
+					connections.connection.query(sqlVerifyAnswer, [group, problem], function(err, rowsProblems, fields) {
 						if(err){
 							util.log(sqlVerifyAnswer);
 							util.log(err);
