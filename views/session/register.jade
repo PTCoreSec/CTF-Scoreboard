@@ -1,0 +1,36 @@
+extends ../layout
+
+block scripts
+	link(rel='stylesheet', href='/stylesheets/login.css')
+
+block content
+	div.container
+		div.content
+			div.row
+				div.register-form
+					form(action='register', method='POST')
+						header
+							h3 Register Team
+							- if (typeof message !== "undefined")
+								p.error #{message}
+							.module_content
+								fieldset
+									label Team Name
+									- if (typeof username !== "undefined")
+										input(type='text', name='teamName', value=username)
+									- else
+										input(type='text', name='teamName', value='')
+								fieldset
+									label Password
+									input(type='password', name='teamPassword', value='')
+								fieldset
+									label Confirm Password
+									input(type='password', name='confirmTeamPassword')
+								fieldset
+									label Team Description
+									textarea(rows='12', name='description')
+								.clear
+								footer
+								.submit_link
+								input.alt_btn(type='submit', value='Submit')
+								.spacer
